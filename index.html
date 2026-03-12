@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ECLEAR リカバリーウェア 商品ページ ワイヤーフレーム</title>
+<title>ECLEAR リカバリーウェア 商品ページ ワイヤーフレーム v2</title>
 <style>
   :root {
     --bg: #ffffff;
@@ -22,831 +22,373 @@
     --green: #059669;
     --navy: #1e3a5f;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
     color: var(--text);
-    background: #f0f0f0;
+    background: #e8e8e8;
     line-height: 1.6;
   }
 
-  /* ワイヤーフレーム全体 */
+  /* === レイアウト切替 === */
+  .view-toggle {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    background: var(--navy); color: #fff; padding: 8px 16px;
+    display: flex; justify-content: center; align-items: center; gap: 16px;
+    font-size: 13px;
+  }
+  .view-toggle button {
+    padding: 5px 14px; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px;
+    background: transparent; color: #fff; cursor: pointer; font-size: 12px;
+  }
+  .view-toggle button.active { background: rgba(255,255,255,0.2); border-color: #fff; }
+  body { padding-top: 44px; }
+
+  /* ワイヤーフレーム */
   .wireframe-container {
     max-width: 430px;
     margin: 0 auto;
     background: var(--bg);
     position: relative;
     box-shadow: 0 0 40px rgba(0,0,0,0.15);
+    transition: max-width 0.3s;
   }
+  body.desktop-view .wireframe-container { max-width: 1200px; }
+  body.tablet-view .wireframe-container { max-width: 768px; }
 
-  /* 注釈システム */
+  /* === 注釈 === */
   .annotation {
-    background: #fffbeb;
-    border-left: 3px solid #f59e0b;
-    padding: 8px 12px;
-    margin: 4px 0;
-    font-size: 11px;
-    color: #92400e;
-    line-height: 1.5;
+    background: #fffbeb; border-left: 3px solid #f59e0b;
+    padding: 8px 12px; margin: 4px 0; font-size: 11px; color: #92400e; line-height: 1.5;
   }
   .annotation strong { color: #78350f; }
-  .annotation.critical {
-    background: #fef2f2;
-    border-left-color: var(--red);
-    color: #991b1b;
-  }
+  .annotation.critical { background: #fef2f2; border-left-color: var(--red); color: #991b1b; }
   .annotation.critical strong { color: #7f1d1d; }
+
+  /* AI Prompt */
+  .ai-prompt {
+    background: #f0fdf4; border: 1px solid #86efac; border-left: 4px solid #22c55e;
+    padding: 10px 12px; margin: 4px 0; font-size: 11px; color: #14532d; line-height: 1.6;
+    position: relative;
+  }
+  .ai-prompt .prompt-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px; font-weight: 700; font-size: 11px; color: #15803d;
+  }
+  .ai-prompt .prompt-header .horizon-tag {
+    background: #dcfce7; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 600;
+  }
+  .ai-prompt pre {
+    background: #fff; border: 1px solid #bbf7d0; border-radius: 4px;
+    padding: 8px 10px; font-size: 11px; font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    white-space: pre-wrap; word-break: break-word; color: #166534; line-height: 1.5;
+    cursor: pointer; position: relative;
+  }
+  .ai-prompt pre:hover { background: #f0fdf4; }
+  .ai-prompt pre::after {
+    content: 'click to copy'; position: absolute; top: 4px; right: 6px;
+    font-size: 9px; color: #86efac; font-family: sans-serif;
+  }
+
+  /* レスポンシブ仕様 */
+  .responsive-spec {
+    background: #eff6ff; border-left: 3px solid #3b82f6;
+    padding: 8px 12px; margin: 4px 0; font-size: 11px; color: #1e3a8a; line-height: 1.5;
+  }
+  .responsive-spec strong { color: #1e40af; }
+  .responsive-spec .bp { display: inline-block; background: #dbeafe; padding: 1px 5px; border-radius: 2px; font-size: 10px; font-weight: 600; margin-right: 4px; }
+
+  /* 設定仕様 */
+  .settings-spec {
+    background: #faf5ff; border-left: 3px solid #a855f7;
+    padding: 8px 12px; margin: 4px 0; font-size: 11px; color: #581c87; line-height: 1.5;
+  }
+  .settings-spec strong { color: #6b21a8; }
 
   /* セクション区切り */
   .section-label {
-    background: var(--navy);
-    color: #fff;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: var(--navy); color: #fff; padding: 10px 16px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.05em;
+    display: flex; justify-content: space-between; align-items: center;
   }
   .section-label .tag {
-    background: rgba(255,255,255,0.2);
-    padding: 2px 8px;
-    border-radius: 3px;
-    font-size: 11px;
-    font-weight: 400;
+    background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 3px;
+    font-size: 11px; font-weight: 400;
   }
 
-  /* ===== ヘッダー ===== */
+  /* === UIコンポーネント === */
   .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    background: #fff;
-    z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    position: sticky; top: 44px; background: #fff; z-index: 100;
   }
   .header-logo { font-size: 16px; font-weight: 700; letter-spacing: 0.1em; }
   .header-logo span { color: var(--badge-bg); }
   .header-icons { display: flex; gap: 16px; font-size: 18px; }
 
-  /* ===== 画像ギャラリー ===== */
   .gallery {
-    position: relative;
-    background: #f5f5f5;
-    aspect-ratio: 1/1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative; background: #f5f5f5; aspect-ratio: 1/1;
+    display: flex; align-items: center; justify-content: center;
   }
-  .gallery-placeholder {
-    text-align: center;
-    color: var(--text-sub);
-  }
+  body.desktop-view .gallery { aspect-ratio: auto; height: 560px; }
+  .gallery-placeholder { text-align: center; color: var(--text-sub); }
   .gallery-placeholder .icon { font-size: 48px; margin-bottom: 8px; opacity: 0.4; }
   .gallery-placeholder p { font-size: 12px; }
   .gallery-dots {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 6px;
+    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 6px;
   }
-  .gallery-dots span {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.2);
-  }
+  .gallery-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); }
   .gallery-dots span.active { background: var(--text); }
   .gallery-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: var(--badge-bg);
-    color: var(--badge-text);
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: 700;
-    border-radius: 3px;
-    letter-spacing: 0.05em;
+    position: absolute; top: 12px; left: 12px;
+    background: var(--badge-bg); color: var(--badge-text);
+    padding: 4px 10px; font-size: 11px; font-weight: 700; border-radius: 3px;
   }
-  .gallery-thumbs {
-    display: flex;
-    gap: 4px;
-    padding: 8px 16px;
-    overflow-x: auto;
-  }
+  .gallery-thumbs { display: flex; gap: 4px; padding: 8px 16px; overflow-x: auto; }
   .gallery-thumbs .thumb {
-    width: 64px;
-    height: 64px;
-    border-radius: 4px;
-    background: #e8e8e8;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 9px;
-    color: var(--text-sub);
-    text-align: center;
-    border: 2px solid transparent;
+    width: 64px; height: 64px; border-radius: 4px; background: #e8e8e8;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: var(--text-sub); text-align: center; border: 2px solid transparent;
   }
   .gallery-thumbs .thumb.active { border-color: var(--text); }
 
-  /* ===== 商品情報 ===== */
   .product-info { padding: 16px; }
-  .product-badges {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
-  }
-  .product-badges .badge {
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    font-weight: 600;
-  }
+  .product-badges { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+  .product-badges .badge { font-size: 10px; padding: 3px 8px; border-radius: 3px; font-weight: 600; }
   .badge-medical { background: #dbeafe; color: #1e40af; }
   .badge-set { background: #dcfce7; color: #166534; }
   .badge-free-ship { background: #f3e8ff; color: #6b21a8; }
-
-  .product-title {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.4;
-    margin-bottom: 4px;
-  }
-  .product-subtitle {
-    font-size: 13px;
-    color: var(--text-sub);
-    margin-bottom: 12px;
-  }
-
-  /* 評価 */
-  .rating-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
+  .product-title { font-size: 18px; font-weight: 700; line-height: 1.4; margin-bottom: 4px; }
+  .product-subtitle { font-size: 13px; color: var(--text-sub); margin-bottom: 12px; }
+  .rating-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
   .stars { color: var(--star); font-size: 16px; letter-spacing: 1px; }
   .rating-score { font-size: 14px; font-weight: 700; }
   .rating-count { font-size: 13px; color: var(--accent); text-decoration: underline; }
-
-  /* 価格 */
   .price-area { margin-bottom: 16px; }
-  .price-current {
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
+  .price-current { font-size: 28px; font-weight: 800; }
   .price-current .yen { font-size: 16px; font-weight: 600; }
   .price-current .tax { font-size: 12px; font-weight: 400; color: var(--text-sub); }
-  .price-compare {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 4px;
-  }
-  .price-original {
-    font-size: 14px;
-    color: var(--text-light);
-    text-decoration: line-through;
-  }
-  .price-save {
-    font-size: 12px;
-    color: var(--red);
-    font-weight: 700;
-    background: #fef2f2;
-    padding: 2px 6px;
-    border-radius: 3px;
-  }
+  .price-compare { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+  .price-original { font-size: 14px; color: var(--text-light); text-decoration: line-through; }
+  .price-save { font-size: 12px; color: var(--red); font-weight: 700; background: #fef2f2; padding: 2px 6px; border-radius: 3px; }
 
-  /* セット内容 */
-  .set-contents {
-    background: var(--section-bg);
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 16px;
-  }
-  .set-contents-title {
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--text-sub);
-  }
-  .set-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 0;
-    font-size: 13px;
-  }
-  .set-item .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--badge-bg);
-    flex-shrink: 0;
-  }
+  .set-contents { background: var(--section-bg); border-radius: 8px; padding: 12px; margin-bottom: 16px; }
+  .set-contents-title { font-size: 12px; font-weight: 700; margin-bottom: 8px; color: var(--text-sub); }
+  .set-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; }
+  .set-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--badge-bg); flex-shrink: 0; }
 
-  /* カラー選択 */
   .variant-section { margin-bottom: 16px; }
-  .variant-label {
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
+  .variant-label { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
   .variant-label span { font-weight: 400; color: var(--text-sub); }
-  .color-swatches {
-    display: flex;
-    gap: 10px;
-  }
-  .swatch {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    position: relative;
-    cursor: pointer;
-  }
+  .color-swatches { display: flex; gap: 10px; }
+  .swatch { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; position: relative; }
   .swatch.active { border-color: var(--text); }
-  .swatch.active::after {
-    content: '';
-    position: absolute;
-    inset: -5px;
-    border: 1.5px solid var(--text);
-    border-radius: 50%;
-  }
+  .swatch.active::after { content: ''; position: absolute; inset: -5px; border: 1.5px solid var(--text); border-radius: 50%; }
   .swatch-black { background: #1a1a1a; }
   .swatch-navy { background: #1e3a5f; }
+  .size-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+  .size-btn { min-width: 56px; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 6px; text-align: center; font-size: 14px; font-weight: 600; cursor: pointer; background: #fff; }
+  .size-btn.active { border-color: var(--text); background: var(--text); color: #fff; }
+  .size-guide-link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--accent); margin-top: 8px; text-decoration: underline; }
 
-  /* サイズ選択 */
-  .size-buttons {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .size-btn {
-    min-width: 56px;
-    padding: 10px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    background: #fff;
-  }
-  .size-btn.active {
-    border-color: var(--text);
-    background: var(--text);
-    color: #fff;
-  }
-  .size-btn.soldout {
-    opacity: 0.35;
-    text-decoration: line-through;
-    cursor: not-allowed;
-  }
-  .size-guide-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    color: var(--accent);
-    margin-top: 8px;
-    text-decoration: underline;
-  }
-
-  /* CTAエリア */
   .cta-area { padding: 0 16px 16px; }
-  .cta-primary {
-    width: 100%;
-    padding: 16px;
-    background: var(--cta);
-    color: var(--cta-text);
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
-  }
-  .cta-secondary {
-    width: 100%;
-    padding: 14px;
-    background: #fff;
-    color: var(--text);
-    border: 1.5px solid var(--text);
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 8px;
-  }
-  .payment-icons {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-    margin-top: 8px;
-  }
-  .payment-icons span {
-    font-size: 10px;
-    background: var(--section-bg);
-    padding: 4px 8px;
-    border-radius: 3px;
-    color: var(--text-sub);
-  }
+  .cta-primary { width: 100%; padding: 16px; background: var(--cta); color: var(--cta-text); border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .cta-secondary { width: 100%; padding: 14px; background: #000; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
+  .payment-icons { display: flex; gap: 6px; justify-content: center; margin-top: 8px; }
+  .payment-icons span { font-size: 10px; background: var(--section-bg); padding: 4px 8px; border-radius: 3px; color: var(--text-sub); }
 
-  /* 信頼バー */
-  .trust-bar {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    padding: 12px 16px;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  .trust-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    color: var(--text-sub);
-  }
-  .trust-item .icon { font-size: 14px; }
+  .trust-bar { display: flex; justify-content: center; gap: 16px; padding: 12px 16px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .trust-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-sub); }
 
-  /* コンテンツセクション共通 */
   .content-section { padding: 32px 16px; }
+  body.desktop-view .content-section { padding: 48px 40px; max-width: 1000px; margin: 0 auto; }
   .content-section.alt-bg { background: var(--section-bg); }
-  .section-heading {
-    font-size: 20px;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 6px;
-    line-height: 1.4;
-  }
-  .section-subheading {
-    font-size: 13px;
-    color: var(--text-sub);
-    text-align: center;
-    margin-bottom: 24px;
-  }
+  body.desktop-view .content-section.alt-bg { max-width: none; }
+  body.desktop-view .content-section.alt-bg > * { max-width: 1000px; margin-left: auto; margin-right: auto; }
+  .section-heading { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 6px; line-height: 1.4; }
+  body.desktop-view .section-heading { font-size: 28px; }
+  .section-subheading { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 24px; }
 
-  /* 悩み共感 */
-  .pain-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .pain-card {
-    display: flex;
-    gap: 12px;
-    padding: 16px;
-    background: #fff;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-  }
-  .pain-card .icon-box {
-    width: 48px; height: 48px;
-    background: #fee2e2;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
+  .pain-cards { display: flex; flex-direction: column; gap: 12px; }
+  body.desktop-view .pain-cards { flex-direction: row; }
+  .pain-card { display: flex; gap: 12px; padding: 16px; background: #fff; border-radius: 10px; border: 1px solid var(--border); }
+  body.desktop-view .pain-card { flex-direction: column; text-align: center; flex: 1; padding: 24px; }
+  .pain-card .icon-box { width: 48px; height: 48px; background: #fee2e2; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  body.desktop-view .pain-card .icon-box { width: 64px; height: 64px; font-size: 28px; margin: 0 auto 12px; }
   .pain-card .text h4 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
   .pain-card .text p { font-size: 12px; color: var(--text-sub); line-height: 1.5; }
+  .solution-bridge { text-align: center; padding: 24px 16px; font-size: 14px; color: var(--text-sub); line-height: 1.8; }
+  .solution-bridge strong { color: var(--text); font-size: 18px; display: block; margin-bottom: 8px; }
+  body.desktop-view .solution-bridge strong { font-size: 24px; }
 
-  .solution-bridge {
-    text-align: center;
-    padding: 24px 16px;
-    font-size: 14px;
-    color: var(--text-sub);
-    line-height: 1.8;
-  }
-  .solution-bridge strong {
-    color: var(--text);
-    font-size: 18px;
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  /* テクノロジー */
-  .tech-visual {
-    background: linear-gradient(135deg, #0d1b2a 0%, #1b3a4b 100%);
-    border-radius: 12px;
-    padding: 24px 20px;
-    color: #fff;
-    margin-bottom: 20px;
-  }
-  .tech-visual h3 {
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 4px;
-  }
-  .tech-visual .subtitle {
-    font-size: 12px;
-    opacity: 0.7;
-    margin-bottom: 16px;
-  }
-  .tech-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .tech-step {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  .tech-step .num {
-    width: 28px; height: 28px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
+  .tech-visual { background: linear-gradient(135deg, #0d1b2a 0%, #1b3a4b 100%); border-radius: 12px; padding: 24px 20px; color: #fff; margin-bottom: 20px; }
+  body.desktop-view .tech-visual { padding: 40px; display: flex; gap: 40px; align-items: center; }
+  .tech-visual h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  body.desktop-view .tech-visual h3 { font-size: 28px; }
+  .tech-visual .subtitle { font-size: 12px; opacity: 0.7; margin-bottom: 16px; }
+  .tech-steps { display: flex; flex-direction: column; gap: 12px; }
+  body.desktop-view .tech-steps { flex: 1; }
+  .tech-step { display: flex; gap: 12px; align-items: flex-start; }
+  .tech-step .num { width: 28px; height: 28px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
   .tech-step .desc { font-size: 13px; line-height: 1.5; }
 
-  /* 5つのこだわり */
-  .features-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .feature-card {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .feature-card .img-placeholder {
-    aspect-ratio: 4/3;
-    background: #e8e8e8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    color: var(--text-sub);
-  }
-  .feature-card .feature-text {
-    padding: 10px;
-  }
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  body.desktop-view .features-grid { grid-template-columns: repeat(4, 1fr); }
+  .feature-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .feature-card .img-placeholder { aspect-ratio: 4/3; background: #e8e8e8; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--text-sub); }
+  .feature-card .feature-text { padding: 10px; }
   .feature-card .feature-text h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
   .feature-card .feature-text p { font-size: 11px; color: var(--text-sub); line-height: 1.4; }
-  .feature-full {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    background: #f0f7ff;
-    border-radius: 10px;
-    border: 1px solid #bfdbfe;
-  }
-  .feature-full .highlight-num {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--badge-bg);
-    flex-shrink: 0;
-  }
+  .feature-full { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding: 16px; background: #f0f7ff; border-radius: 10px; border: 1px solid #bfdbfe; }
+  .feature-full .highlight-num { font-size: 32px; font-weight: 800; color: var(--badge-bg); flex-shrink: 0; }
   .feature-full .highlight-text h4 { font-size: 14px; font-weight: 700; }
   .feature-full .highlight-text p { font-size: 12px; color: var(--text-sub); }
 
-  /* 競合比較 */
-  .compare-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-  .compare-table th,
-  .compare-table td {
-    padding: 10px 8px;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-  }
-  .compare-table th {
-    font-weight: 600;
-    background: var(--section-bg);
-    font-size: 11px;
-    color: var(--text-sub);
-  }
-  .compare-table th:first-child,
-  .compare-table td:first-child {
-    text-align: left;
-    font-weight: 600;
-  }
-  .compare-table .eclear-col {
-    background: #f0f7ff;
-    font-weight: 700;
-  }
-  .compare-table .eclear-col.header {
-    background: var(--badge-bg);
-    color: #fff;
-    font-weight: 700;
-  }
+  .scene-card { border-radius: 12px; overflow: hidden; margin-bottom: 12px; }
+  body.desktop-view .scene-card { display: flex; }
+  body.desktop-view .scene-card:nth-child(odd) { flex-direction: row-reverse; }
+  .scene-card .scene-img { aspect-ratio: 16/9; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; padding: 20px; text-align: center; }
+  body.desktop-view .scene-card .scene-img { flex: 1; aspect-ratio: auto; min-height: 200px; }
+  .scene-card .scene-img.light { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%); color: var(--text); }
+  .scene-card .scene-text { padding: 16px; background: #fff; border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px; }
+  body.desktop-view .scene-card .scene-text { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px; border-top: 1px solid var(--border); border-radius: 0; }
+  .scene-card .scene-text h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .scene-card .scene-text p { font-size: 12px; color: var(--text-sub); line-height: 1.6; }
+
+  .mid-cta { padding: 24px 16px; text-align: center; background: linear-gradient(180deg, var(--section-bg) 0%, #fff 100%); }
+  .mid-cta .cta-btn { display: block; width: 100%; max-width: 480px; margin: 0 auto 8px; padding: 16px; background: var(--cta); color: var(--cta-text); border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .mid-cta .cta-note { font-size: 12px; color: var(--text-sub); }
+
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .compare-table th, .compare-table td { padding: 10px 8px; text-align: center; border-bottom: 1px solid var(--border); }
+  .compare-table th { font-weight: 600; background: var(--section-bg); font-size: 11px; color: var(--text-sub); }
+  .compare-table th:first-child, .compare-table td:first-child { text-align: left; font-weight: 600; }
+  .compare-table .eclear-col { background: #f0f7ff; font-weight: 700; }
+  .compare-table .eclear-col.header { background: var(--badge-bg); color: #fff; }
   .compare-table .check { color: var(--green); }
   .compare-table .cross { color: var(--text-light); }
   .compare-table .price-highlight { color: var(--red); font-weight: 800; font-size: 14px; }
 
-  /* レビュー */
-  .review-summary {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
-    background: var(--section-bg);
-    border-radius: 10px;
-    margin-bottom: 16px;
-  }
-  .review-summary .score {
-    text-align: center;
-  }
+  .review-summary { display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--section-bg); border-radius: 10px; margin-bottom: 16px; }
+  .review-summary .score { text-align: center; }
   .review-summary .score .num { font-size: 36px; font-weight: 800; }
   .review-summary .score .stars-sm { color: var(--star); font-size: 14px; }
   .review-summary .score .total { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
   .review-bars { flex: 1; }
-  .review-bar-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 3px;
-    font-size: 11px;
-  }
+  .review-bar-row { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; font-size: 11px; }
   .review-bar-row .label { width: 16px; text-align: right; }
-  .review-bar-row .bar {
-    flex: 1;
-    height: 8px;
-    background: #e5e7eb;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .review-bar-row .bar .fill {
-    height: 100%;
-    background: var(--star);
-    border-radius: 4px;
-  }
+  .review-bar-row .bar { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+  .review-bar-row .bar .fill { height: 100%; background: var(--star); border-radius: 4px; }
   .review-bar-row .count { width: 24px; font-size: 10px; color: var(--text-light); }
-
-  .review-card {
-    padding: 16px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-bottom: 12px;
-  }
-  .review-card .review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
+  .review-card { padding: 16px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; }
+  body.desktop-view .review-cards-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .review-card .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .review-card .reviewer { font-size: 13px; font-weight: 600; }
   .review-card .review-date { font-size: 11px; color: var(--text-light); }
   .review-card .review-stars { color: var(--star); font-size: 13px; margin-bottom: 4px; }
   .review-card .review-text { font-size: 13px; line-height: 1.6; color: var(--text-sub); }
-  .review-card .review-tag {
-    display: inline-block;
-    font-size: 10px;
-    background: var(--section-bg);
-    padding: 2px 8px;
-    border-radius: 3px;
-    margin-top: 8px;
-    color: var(--text-sub);
-  }
+  .review-card .review-tag { display: inline-block; font-size: 10px; background: var(--section-bg); padding: 2px 8px; border-radius: 3px; margin-top: 8px; color: var(--text-sub); }
 
-  /* FAQ */
-  .faq-item {
-    border-bottom: 1px solid var(--border);
-    padding: 14px 0;
-  }
-  .faq-q {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .faq-q .toggle { font-size: 18px; color: var(--text-light); }
-  .faq-a {
-    font-size: 13px;
-    color: var(--text-sub);
-    margin-top: 8px;
-    line-height: 1.6;
-    display: none;
-  }
-  .faq-item.open .faq-a { display: block; }
+  .faq-item { border-bottom: 1px solid var(--border); padding: 14px 0; }
+  .faq-q { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .faq-q .toggle { font-size: 18px; color: var(--text-light); transition: transform 0.2s; }
+  .faq-a { font-size: 13px; color: var(--text-sub); margin-top: 8px; line-height: 1.6; max-height: 0; overflow: hidden; transition: max-height 0.3s; }
+  .faq-item.open .faq-a { max-height: 200px; }
   .faq-item.open .toggle { transform: rotate(45deg); }
 
-  /* サイズガイド */
-  .size-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    margin-top: 12px;
-  }
-  .size-table th, .size-table td {
-    padding: 8px;
-    border: 1px solid var(--border);
-    text-align: center;
-  }
+  .size-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; }
+  .size-table th, .size-table td { padding: 8px; border: 1px solid var(--border); text-align: center; }
   .size-table th { background: var(--section-bg); font-weight: 600; }
 
-  /* 関連商品 */
-  .related-scroll {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding: 0 16px 8px;
-    -webkit-overflow-scrolling: touch;
-  }
-  .related-card {
-    flex-shrink: 0;
-    width: 160px;
-  }
-  .related-card .img-ph {
-    width: 160px; height: 160px;
-    background: #e8e8e8;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    color: var(--text-sub);
-  }
-  .related-card .name { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
-  .related-card .price { font-size: 14px; font-weight: 700; }
-
-  /* スティッキーCTA */
-  .sticky-cta {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 430px;
-    background: #fff;
-    border-top: 1px solid var(--border);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 200;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
-  }
-  .sticky-cta .price-sm {
-    font-size: 18px;
-    font-weight: 800;
-    white-space: nowrap;
-  }
-  .sticky-cta .price-sm .yen { font-size: 12px; }
-  .sticky-cta .btn-sticky {
-    flex: 1;
-    padding: 14px;
-    background: var(--cta);
-    color: var(--cta-text);
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  /* フッター余白（スティッキーCTA分） */
-  .footer-spacer { height: 80px; }
-
-  /* ===== デスクトップ表示切替ヘルプ ===== */
-  .help-bar {
-    background: var(--navy);
-    color: #fff;
-    text-align: center;
-    padding: 12px 16px;
-    font-size: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 300;
-  }
-  .help-bar a { color: #93c5fd; }
-
-  /* シーン提案 */
-  .scene-card {
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .scene-card .scene-img {
-    aspect-ratio: 16/9;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 13px;
-    padding: 20px;
-    text-align: center;
-  }
-  .scene-card .scene-img.light {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%);
-    color: var(--text);
-  }
-  .scene-card .scene-text {
-    padding: 16px;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-top: none;
-    border-radius: 0 0 12px 12px;
-  }
-  .scene-card .scene-text h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-  .scene-card .scene-text p { font-size: 12px; color: var(--text-sub); line-height: 1.6; }
-
-  /* 保証セクション */
-  .guarantee-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .guarantee-item {
-    text-align: center;
-    padding: 16px 8px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-  }
+  .guarantee-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  body.desktop-view .guarantee-grid { grid-template-columns: repeat(4, 1fr); }
+  .guarantee-item { text-align: center; padding: 16px 8px; border: 1px solid var(--border); border-radius: 10px; }
   .guarantee-item .g-icon { font-size: 24px; margin-bottom: 6px; }
   .guarantee-item h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
   .guarantee-item p { font-size: 11px; color: var(--text-sub); }
 
-  /* 中間CTA */
-  .mid-cta {
-    padding: 24px 16px;
-    text-align: center;
-    background: linear-gradient(180deg, var(--section-bg) 0%, #fff 100%);
+  .related-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 0 16px 8px; -webkit-overflow-scrolling: touch; }
+  body.desktop-view .related-scroll { justify-content: center; overflow: visible; }
+  .related-card { flex-shrink: 0; width: 160px; }
+  body.desktop-view .related-card { width: 220px; }
+  .related-card .img-ph { width: 100%; aspect-ratio: 1/1; background: #e8e8e8; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-sub); }
+  .related-card .name { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+  .related-card .price { font-size: 14px; font-weight: 700; }
+
+  .sticky-cta {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 430px; background: #fff; border-top: 1px solid var(--border);
+    padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+    z-index: 200; box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
   }
-  .mid-cta .cta-btn {
-    display: block;
-    width: 100%;
-    padding: 16px;
-    background: var(--cta);
-    color: var(--cta-text);
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-bottom: 8px;
-  }
-  .mid-cta .cta-note {
-    font-size: 12px;
-    color: var(--text-sub);
-  }
+  body.desktop-view .sticky-cta { max-width: 1200px; }
+  .sticky-cta .price-sm { font-size: 18px; font-weight: 800; white-space: nowrap; }
+  .sticky-cta .price-sm .yen { font-size: 12px; }
+  .sticky-cta .btn-sticky { flex: 1; max-width: 400px; padding: 14px; background: var(--cta); color: var(--cta-text); border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; }
+  .footer-spacer { height: 80px; }
+
+  .medical-badge { text-align: center; margin-top: 16px; padding: 12px; background: #f0f7ff; border-radius: 8px; }
+  .medical-badge .title { font-size: 12px; font-weight: 700; color: var(--badge-bg); margin-bottom: 4px; }
+  .medical-badge .detail { font-size: 11px; color: var(--text-sub); }
+
+  /* デスクトップ: 商品情報2カラム */
+  body.desktop-view .product-top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  body.desktop-view .product-top-grid .gallery { height: 600px; aspect-ratio: auto; }
+  body.desktop-view .product-top-grid .product-right { padding: 24px 32px; position: sticky; top: 80px; align-self: start; }
 </style>
 </head>
 <body>
 
-<div class="help-bar">
-  ECLEAR リカバリーウェア 商品ページ ワイヤーフレーム（モバイル 430px）
+<div class="view-toggle">
+  <span>View:</span>
+  <button class="active" onclick="setView('mobile')">Mobile 430px</button>
+  <button onclick="setView('tablet')">Tablet 768px</button>
+  <button onclick="setView('desktop')">Desktop 1200px</button>
 </div>
 
 <div class="wireframe-container">
 
 <!-- ============================================ -->
-<!-- SECTION 0: ヘッダー -->
+<!-- HEADER -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 0: ヘッダー（固定）<span class="tag">sticky</span></div>
+<div class="section-label">HEADER <span class="tag">Horizon: header.liquid</span></div>
 <div class="annotation">
-  <strong>設計意図:</strong> ロゴ・検索・カートの3要素のみ。スクロール追従でブランド認知を維持。高さ48px以内に収める。
+  <strong>Horizonデフォルト:</strong> header.liquid をそのまま使用。ロゴ画像をECLEARに差し替えるだけ。高さ48px。
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> ハンバーガーメニュー + ロゴ中央 + カートアイコン右 |
+  <span class="bp">Desktop</span> ロゴ左 + ナビメニュー中央 + 検索/カート右
 </div>
 
 <div class="header">
   <div class="header-logo"><span>ECLEAR</span></div>
   <div class="header-icons">
     <span>&#128269;</span>
-    <span>&#128722; <small style="font-size:10px;background:var(--red);color:#fff;padding:1px 5px;border-radius:8px;">0</small></span>
+    <span>&#128722;</span>
   </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 1: 商品画像ギャラリー -->
+<!-- PRODUCT INFO (Horizon built-in) -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 1: 商品画像ギャラリー <span class="tag">最重要</span></div>
-<div class="annotation critical">
-  <strong>CVR直結:</strong> 画像品質がCVRに最も影響。必要枚数: 8〜10枚。<br>
-  1. モデル着用（正面）/ 2. モデル着用（背面）/ 3. セット内容一覧 / 4. 素材アップ / 5. ライフスタイル（就寝）/ 6. ライフスタイル（リラックス）/ 7. サイズ感比較 / 8. Medilect技術図解 / 9. カラバリ比較 / 10. パッケージ
-</div>
+<div class="section-label">SECTION 1-3: 商品情報 <span class="tag">Horizon: product-information.liquid</span></div>
 <div class="annotation">
-  <strong>仕様:</strong> スワイプ対応、ピンチズーム対応、自動再生なし。1:1アスペクト比。<br>
-  <strong>参考:</strong> BAKUNEは着用写真を先頭に配置。ライフスタイル写真を3枚目以降に。
+  <strong>Horizon built-in:</strong> product-information セクションのブロックで構成。AI Generate不要。テーマエディタで調整。
+</div>
+<div class="settings-spec">
+  <strong>テーマエディタ設定:</strong><br>
+  - Media gallery layout: <code>Slideshow</code> / Thumbnail position: <code>Bottom</code><br>
+  - Enable zoom: <code>ON</code> / Enable video looping: <code>ON</code><br>
+  - Desktop layout: <code>2-column (media left)</code> / Media width: <code>55%</code><br>
+  - Product details sticky: <code>ON</code>（デスクトップでスクロール追従）
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> 画像フル幅 → 商品情報 縦積み。サムネイル横スクロール |
+  <span class="bp">Tablet</span> 同上 |
+  <span class="bp">Desktop</span> 左55%画像ギャラリー + 右45%商品情報の2カラム。右カラムsticky
 </div>
 
 <div class="gallery">
@@ -859,70 +401,42 @@
     <span class="active"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
   </div>
 </div>
-
 <div class="gallery-thumbs">
   <div class="thumb active">正面</div>
   <div class="thumb">背面</div>
-  <div class="thumb">セット<br>内容</div>
+  <div class="thumb">セット</div>
   <div class="thumb">素材</div>
   <div class="thumb">就寝</div>
   <div class="thumb">リラックス</div>
   <div class="thumb">サイズ感</div>
-  <div class="thumb">技術<br>図解</div>
-</div>
-
-<!-- ============================================ -->
-<!-- SECTION 2: 商品情報 + バリアント選択 -->
-<!-- ============================================ -->
-<div class="section-label">SECTION 2: 商品情報 + バリアント <span class="tag">ファーストビュー内</span></div>
-<div class="annotation">
-  <strong>設計意図:</strong> 画像+商品名+価格+カラー/サイズ+CTAを「スクロール1回以内」に収める。<br>
-  BAKUNEはこの構成をファーストビューに完全収容し、即決ユーザーの離脱を防いでいる。
+  <div class="thumb">技術図解</div>
 </div>
 
 <div class="product-info">
-  <!-- バッジ -->
   <div class="product-badges">
     <span class="badge badge-medical">一般医療機器</span>
     <span class="badge badge-set">上下セット</span>
     <span class="badge badge-free-ship">送料無料</span>
   </div>
-
-  <!-- タイトル -->
   <h1 class="product-title">ECLEAR リカバリーウェア<br>長袖トップス + ロングパンツ セット</h1>
-  <p class="product-subtitle">Medilect™ セラミックス配合 / 綿20%混紡</p>
-
-  <!-- 評価 -->
+  <p class="product-subtitle">Medilect&#8482; セラミックス配合 / 綿20%混紡</p>
   <div class="rating-row">
     <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
     <span class="rating-score">4.6</span>
     <span class="rating-count">127件のレビュー</span>
   </div>
-
-  <!-- 価格 -->
   <div class="price-area">
-    <div class="price-current">
-      <span class="yen">&yen;</span>16,800<span class="tax">（税込）</span>
-    </div>
+    <div class="price-current"><span class="yen">&yen;</span>16,800<span class="tax">（税込）</span></div>
     <div class="price-compare">
       <span class="price-original">&yen;16,960（単品合計）</span>
       <span class="price-save">セットで&yen;160お得</span>
     </div>
   </div>
-
-  <div class="annotation">
-    <strong>価格の見せ方:</strong> 単品合計との差額を明示。将来的にセット割引率を拡大すればここのインパクトが増す。<br>
-    BAKUNEはセット割引率を10%以上設定して訴求。割引率の見直しを推奨。
-  </div>
-
-  <!-- セット内容 -->
   <div class="set-contents">
     <div class="set-contents-title">セット内容</div>
     <div class="set-item"><span class="dot"></span>長袖トップス（&yen;8,400相当）</div>
     <div class="set-item"><span class="dot"></span>ロングパンツ（&yen;8,400相当）</div>
   </div>
-
-  <!-- カラー選択 -->
   <div class="variant-section">
     <div class="variant-label">カラー: <span>ブラック</span></div>
     <div class="color-swatches">
@@ -930,8 +444,6 @@
       <div class="swatch swatch-navy"></div>
     </div>
   </div>
-
-  <!-- サイズ選択 -->
   <div class="variant-section">
     <div class="variant-label">サイズ: <span>M</span></div>
     <div class="size-buttons">
@@ -945,312 +457,275 @@
   </div>
 </div>
 
-<div class="annotation">
-  <strong>バリアントUI:</strong> ドロップダウンは使わない（Baymard調査でCVR低下要因）。ボタン型セレクターを使用。<br>
-  在庫切れサイズはグレーアウト+取消線で表示は残す。カラースウォッチは画像連動必須。
-</div>
-
-<!-- ============================================ -->
-<!-- SECTION 3: CTA（カートに追加） -->
-<!-- ============================================ -->
-<div class="section-label">SECTION 3: CTA エリア <span class="tag">CVR直結</span></div>
-<div class="annotation critical">
-  <strong>CTA仕様:</strong><br>
-  - ボタン高さ: 56px以上（タップ領域確保）<br>
-  - ボタン色: #1a1a1a（黒）— BAKUNEの濃紺と差別化しつつ高コントラスト<br>
-  - フォント: 16px / Bold / 白文字 / letter-spacing: 0.05em<br>
-  - Apple Pay/Google Pay: Shopify Payments連携で自動表示<br>
-  - <strong>スティッキーCTA（後述）で常時アクセス可能にする</strong>
+<div class="settings-spec">
+  <strong>Variant picker設定:</strong><br>
+  - Type: <code>Buttons</code>（ドロップダウン不可） / Swatch style: <code>Color</code><br>
+  - Size button min-width: <code>56px</code>（調整可能） / Button radius: <code>6px</code><br>
+  - Show size guide link: <code>ON</code> / Sold-out style: <code>Crossed out + dimmed</code>
 </div>
 
 <div class="cta-area">
   <button class="cta-primary">カートに追加</button>
-  <button class="cta-secondary" style="background:#000;color:#fff;border:none;">
-    &#63743; Pay で購入
-  </button>
+  <button class="cta-secondary">&#63743; Pay で購入</button>
   <div class="payment-icons">
     <span>VISA</span><span>Master</span><span>AMEX</span><span>JCB</span><span>Apple Pay</span><span>Google Pay</span>
   </div>
 </div>
 
-<!-- 信頼バー -->
 <div class="trust-bar">
   <div class="trust-item"><span class="icon">&#128666;</span> 送料無料</div>
   <div class="trust-item"><span class="icon">&#128274;</span> 安全決済</div>
   <div class="trust-item"><span class="icon">&#128230;</span> 14日返品可</div>
 </div>
 
-<div class="annotation">
-  <strong>信頼バー:</strong> CTA直下に配置。購入ボタンを押す直前の不安を解消。<br>
-  リライブシャツは「30日全額返金」で差別化。ECLEARも返品期間延長を検討すべき。
+<div class="settings-spec">
+  <strong>Buy buttons設定:</strong><br>
+  - Show quantity selector: <code>ON</code> / Show dynamic checkout: <code>ON</code><br>
+  - Button color: <code>#1a1a1a</code>（調整可能） / Button radius: <code>8px</code>（調整可能）<br>
+  - Button height: <code>56px</code>（調整可能） / Font size: <code>16px</code>（調整可能）
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 4: 悩み共感 → ソリューション -->
+<!-- SECTION 4: 悩み共感 -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 4: 悩み共感 → 解決提示</div>
-<div class="annotation">
-  <strong>設計意図:</strong> 「即決しなかったユーザー」がスクロールで出会う最初のセクション。<br>
-  共感→課題→解決の3ステップで「自分ごと化」させる。BAKUNE/SIXPADも同様の構成。
+<div class="section-label">SECTION 4: 悩み共感 <span class="tag">AI Generate Block</span></div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    Horizon AI Generate Prompt <span class="horizon-tag">Hero or Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create a "pain points" block for a recovery wear product page. Layout: 3 cards stacked vertically on mobile, side-by-side in a row on desktop. Each card has a rounded icon box (48px mobile, 64px desktop) on the left with an emoji or SVG icon, and text on the right with a bold heading (14px, weight 700) and description (12px, color #666). Card styling: white background, 1px border #e5e7eb, border-radius 10px, padding 16px. Below the 3 cards, add a centered "solution bridge" text block with a large bold heading (18px mobile, 24px desktop, weight 800) and smaller description text (14px, color #666, line-height 1.8). Use light gray (#f8f9fa) as the section background. Include editable settings for: section background color, card border radius, each card's icon, heading text, description text, solution heading text, and solution description text. Make all font sizes adjustable in theme editor settings with reasonable defaults.</pre>
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> カード縦積み（アイコン左+テキスト右） |
+  <span class="bp">Desktop</span> カード3列横並び（アイコン上+テキスト下、中央揃え）
+</div>
+<div class="settings-spec">
+  <strong>調整可能な設定:</strong><br>
+  - Section padding top/bottom: <code>32px〜64px</code> / Background color<br>
+  - Card border-radius: <code>0〜20px</code> / Card padding: <code>12〜24px</code><br>
+  - Icon size: <code>40〜80px</code> / Heading font size: <code>13〜18px</code> / Body font size: <code>11〜14px</code><br>
+  - Solution heading font size: <code>16〜28px</code>
 </div>
 
 <div class="content-section alt-bg">
   <div class="section-heading">こんな悩み、ありませんか？</div>
   <div class="section-subheading">日々の疲れ、放っておいていませんか</div>
-
   <div class="pain-cards">
     <div class="pain-card">
       <div class="icon-box">&#128187;</div>
-      <div class="text">
-        <h4>デスクワークで肩がバキバキ</h4>
-        <p>長時間のPC作業で、肩や首に負担がかかる毎日</p>
-      </div>
+      <div class="text"><h4>デスクワークで肩がバキバキ</h4><p>長時間のPC作業で、肩や首に負担がかかる毎日</p></div>
     </div>
     <div class="pain-card">
       <div class="icon-box" style="background:#fef3c7;">&#128164;</div>
-      <div class="text">
-        <h4>朝起きても身体が重い</h4>
-        <p>しっかり寝たはずなのに、スッキリしない日が続く</p>
-      </div>
+      <div class="text"><h4>朝起きても身体が重い</h4><p>しっかり寝たはずなのに、スッキリしない日が続く</p></div>
     </div>
     <div class="pain-card">
       <div class="icon-box" style="background:#dbeafe;">&#127939;</div>
-      <div class="text">
-        <h4>運動後のケアが続かない</h4>
-        <p>ストレッチやマッサージ、毎日は面倒で...</p>
-      </div>
+      <div class="text"><h4>運動後のケアが続かない</h4><p>ストレッチやマッサージ、毎日は面倒で...</p></div>
     </div>
   </div>
-
   <div class="solution-bridge">
     <strong>着るだけで、疲労回復。</strong>
-    ECLEARリカバリーウェアは、身体から放出される遠赤外線を輻射し、<br>
-    血行を促進。筋肉のハリ・コリの緩和をサポートします。
+    ECLEARリカバリーウェアは、身体から放出される遠赤外線を輻射し、<br>血行を促進。筋肉のハリ・コリの緩和をサポートします。
   </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 5: Medilect テクノロジー -->
+<!-- SECTION 5: テクノロジー -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 5: テクノロジー解説 <span class="tag">差別化の核</span></div>
-<div class="annotation">
-  <strong>設計意図:</strong> 「なぜ効くのか」を3ステップの図解で説明。<br>
-  BAKUNEはSELFLAME、SIXPADはMediculation、VENEXはPHTと全社独自技術名でブランディング。<br>
-  Medilect™の名称を印象づける重要セクション。ダークトーンで「テクノロジー感」を演出。
+<div class="section-label">SECTION 5: テクノロジー解説 <span class="tag">AI Generate Block</span></div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    Horizon AI Generate Prompt <span class="horizon-tag">Hero or Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create a technology explanation block with a dark gradient background (from #0d1b2a to #1b3a4b). On mobile: single column with brand name heading (18px, weight 800, white), subtitle (12px, 70% opacity), then 3 numbered steps in a vertical list. Each step has a circular number badge (28px, semi-transparent white background) and description text (13px, white). On desktop: two-column layout with left side showing a placeholder for a technology diagram image (aspect-ratio 4:3) and right side showing the text content. Below the dark block, add a centered light blue (#f0f7ff) certification badge showing "Medical Device" registration info. Include editable settings for: gradient start/end colors, heading text, subtitle text, each step's description, certification text, section padding (32-64px), heading font size (16-32px), step text font size (12-16px), number badge size (24-40px), and border-radius of the dark container (0-20px).</pre>
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> 1カラム、ステップ縦積み |
+  <span class="bp">Desktop</span> 2カラム（左:技術図解画像 / 右:テキスト+ステップ）
+</div>
+<div class="settings-spec">
+  <strong>調整可能な設定:</strong><br>
+  - Dark block gradient colors / border-radius: <code>0〜20px</code> / padding: <code>24〜48px</code><br>
+  - Heading font size: <code>16〜32px</code> / Step text size: <code>12〜16px</code><br>
+  - Number badge size: <code>24〜40px</code> / Technology image upload slot<br>
+  - Certification badge visibility: <code>ON/OFF</code>
 </div>
 
 <div class="content-section">
   <div class="tech-visual">
-    <h3>Medilect™</h3>
-    <div class="subtitle">エレコム独自のセラミックス配合テクノロジー</div>
-    <div class="tech-steps">
-      <div class="tech-step">
-        <div class="num">1</div>
-        <div class="desc">身体が自然に遠赤外線を放出</div>
-      </div>
-      <div class="tech-step">
-        <div class="num">2</div>
-        <div class="desc">Medilect™生地のセラミックスが遠赤外線を輻射</div>
-      </div>
-      <div class="tech-step">
-        <div class="num">3</div>
-        <div class="desc">血行が促進され、筋肉のハリ・コリを緩和、疲労回復</div>
+    <div>
+      <h3>Medilect&#8482;</h3>
+      <div class="subtitle">エレコム独自のセラミックス配合テクノロジー</div>
+      <div class="tech-steps">
+        <div class="tech-step"><div class="num">1</div><div class="desc">身体が自然に遠赤外線を放出</div></div>
+        <div class="tech-step"><div class="num">2</div><div class="desc">Medilect&#8482;生地のセラミックスが遠赤外線を輻射</div></div>
+        <div class="tech-step"><div class="num">3</div><div class="desc">血行が促進され、筋肉のハリ・コリを緩和、疲労回復</div></div>
       </div>
     </div>
   </div>
-
-  <div class="annotation">
-    <strong>画像指示:</strong> このセクションにはMedilect™繊維の拡大写真 or CG、遠赤外線メカニズムのインフォグラフィックを配置。<br>
-    BAKUNEは遠赤外線の仕組み図+サーモグラフィ画像で説得力を出している。ECLEARも同等の素材が必要。
-  </div>
-
-  <!-- 届出番号 -->
-  <div style="text-align:center;margin-top:16px;padding:12px;background:#f0f7ff;border-radius:8px;">
-    <div style="font-size:12px;font-weight:700;color:var(--badge-bg);margin-bottom:4px;">一般医療機器</div>
-    <div style="font-size:11px;color:var(--text-sub);">届出番号: 13B1X10360000059</div>
-    <div style="font-size:11px;color:var(--text-sub);">家庭用遠赤外線血行促進用衣（クラスI）</div>
+  <div class="medical-badge">
+    <div class="title">一般医療機器</div>
+    <div class="detail">届出番号: 13B1X10360000059 / 家庭用遠赤外線血行促進用衣（クラスI）</div>
   </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 6: 5つの設計こだわり -->
+<!-- SECTION 6: 設計こだわり -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 6: 製品設計の5つのこだわり</div>
-<div class="annotation">
-  <strong>設計意図:</strong> 機能的価値を具体的に伝えるセクション。ディテール写真とセットで。<br>
-  「綿20%配合」はECLEAR最大の差別化ポイント（競合はポリエステル/レーヨン主体）。ここで強調。
+<div class="section-label">SECTION 6: 5つのこだわり <span class="tag">AI Generate Block</span></div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    Horizon AI Generate Prompt <span class="horizon-tag">Hero or Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create a product features grid block. Section heading centered (20px mobile, 28px desktop, weight 800) with subheading below (13px, color #666). Grid layout: 2 columns on mobile, 4 columns on desktop. Each feature card has: an image placeholder with 4:3 aspect ratio on top, then a text area with bold title (13px, weight 700) and description (11px, color #666). Cards have 1px border #e5e7eb, border-radius 10px, overflow hidden. Below the grid, add a full-width highlight bar with light blue background (#f0f7ff), 1px border #bfdbfe, displaying a large number (32px, weight 800, color #0d5e8a), bold title, and description side by side. Include editable settings for: number of columns mobile (1-2) and desktop (2-4), card border-radius (0-20px), image aspect ratio, each card's image, title, description, the highlight bar number, title, description, section padding top/bottom (24-64px), section background color, heading font size (16-32px), card title font size (12-16px), card description font size (10-14px), and card gap (8-20px).</pre>
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> 2列グリッド + フル幅ハイライト |
+  <span class="bp">Desktop</span> 4列グリッド + フル幅ハイライト
+</div>
+<div class="settings-spec">
+  <strong>調整可能な設定:</strong><br>
+  - Columns mobile: <code>1〜2</code> / Columns desktop: <code>2〜4</code> / Gap: <code>8〜20px</code><br>
+  - Card border-radius: <code>0〜20px</code> / Image aspect ratio: <code>4:3, 1:1, 16:9</code><br>
+  - Heading font size: <code>16〜32px</code> / Card title size: <code>12〜16px</code> / Card desc size: <code>10〜14px</code><br>
+  - Section padding: <code>24〜64px</code> / Section BG color
 </div>
 
 <div class="content-section alt-bg">
   <div class="section-heading">5つのこだわり設計</div>
   <div class="section-subheading">着心地を追求した、エレコム品質</div>
-
   <div class="features-grid">
-    <div class="feature-card">
-      <div class="img-placeholder">ゆったりシルエット写真</div>
-      <div class="feature-text">
-        <h4>オーバーサイズ</h4>
-        <p>締めつけないゆとり設計</p>
-      </div>
-    </div>
-    <div class="feature-card">
-      <div class="img-placeholder">縫い目アップ写真</div>
-      <div class="feature-text">
-        <h4>フラットシーム</h4>
-        <p>縫い目が平らで快適</p>
-      </div>
-    </div>
-    <div class="feature-card">
-      <div class="img-placeholder">肩部分アップ写真</div>
-      <div class="feature-text">
-        <h4>ラグランスリーブ</h4>
-        <p>肩回りの圧迫を軽減</p>
-      </div>
-    </div>
-    <div class="feature-card">
-      <div class="img-placeholder">ウエスト部分写真</div>
-      <div class="feature-text">
-        <h4>深股上+ゴム</h4>
-        <p>長時間でも快適な着用感</p>
-      </div>
-    </div>
-
-    <!-- 綿20%ハイライト -->
+    <div class="feature-card"><div class="img-placeholder">ゆったりシルエット</div><div class="feature-text"><h4>オーバーサイズ</h4><p>締めつけないゆとり設計</p></div></div>
+    <div class="feature-card"><div class="img-placeholder">縫い目アップ</div><div class="feature-text"><h4>フラットシーム</h4><p>縫い目が平らで快適</p></div></div>
+    <div class="feature-card"><div class="img-placeholder">肩部分アップ</div><div class="feature-text"><h4>ラグランスリーブ</h4><p>肩回りの圧迫を軽減</p></div></div>
+    <div class="feature-card"><div class="img-placeholder">ウエスト部分</div><div class="feature-text"><h4>深股上+ゴム</h4><p>長時間でも快適</p></div></div>
     <div class="feature-full">
       <div class="highlight-num">20%</div>
-      <div class="highlight-text">
-        <h4>綿混紡で心地よい肌触り</h4>
-        <p>ポリ80% + 綿20%。競合にない吸湿性と肌触り</p>
-      </div>
+      <div class="highlight-text"><h4>綿混紡で心地よい肌触り</h4><p>ポリ80% + 綿20%。競合にない吸湿性と肌触り</p></div>
     </div>
   </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 7: 使用シーン提案 -->
+<!-- SECTION 7: 使用シーン -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 7: 使用シーン提案</div>
+<div class="section-label">SECTION 7: 使用シーン <span class="tag">Horizon: media-with-content</span></div>
 <div class="annotation">
-  <strong>設計意図:</strong> 「いつ着るのか」を具体的に提案。24時間使える汎用性をアピール。<br>
-  SIXPADは「24H 365DAYS」、BAKUNEは「睡眠特化」で訴求。ECLEARは「夜+日中」の両方を提案。
+  <strong>Horizon built-in:</strong> <code>media-with-content.liquid</code> セクションを2つ追加。テーマエディタで画像+テキストを設定。AI Generate不要。
+</div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    代替: AI Generate Prompt（カスタムデザインが必要な場合） <span class="horizon-tag">Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create a usage scene showcase block with two scene cards stacked vertically on mobile. Each card has: a full-width image area (aspect-ratio 16:9) on top, and a text content area below with a bold heading (15px, weight 700) and description (12px, color #666, line-height 1.6). On desktop: each card becomes a side-by-side two-column layout (image 50%, text 50%). Alternate the image position: first card has image on left, second card has image on right. Cards have border-radius 12px, overflow hidden. Section has centered heading (20px mobile, 28px desktop) and subheading. Include editable settings for: each card's image, heading, description, image position (left/right), image aspect ratio mobile (16:9, 4:3, 1:1), desktop min-height (200-400px), card border-radius (0-20px), section padding (24-64px), heading font size (14-20px), description font size (11-14px), and section background color.</pre>
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> 画像上+テキスト下の縦積み |
+  <span class="bp">Desktop</span> 画像50%+テキスト50%の横並び。カード交互にimage左右反転
+</div>
+<div class="settings-spec">
+  <strong>調整可能な設定:</strong><br>
+  - Image aspect ratio mobile: <code>16:9, 4:3, 1:1</code> / Desktop min-height: <code>200〜400px</code><br>
+  - Image position per card: <code>Left / Right</code> / Card border-radius: <code>0〜20px</code><br>
+  - Heading font size: <code>14〜20px</code> / Description size: <code>11〜14px</code><br>
+  - Section padding: <code>24〜64px</code> / BG color
 </div>
 
 <div class="content-section">
   <div class="section-heading">着るだけ、それだけ。</div>
   <div class="section-subheading">特別なケアは不要。着替えるだけの新習慣</div>
-
   <div class="scene-card">
-    <div class="scene-img">
-      &#127769; 就寝シーン<br>ベッドルーム / 間接照明 / リラックス
-    </div>
-    <div class="scene-text">
-      <h4>夜の休息に</h4>
-      <p>帰宅後、着替えるだけで「休息モード」ON。寝ている間も血行を促進し、翌朝のスッキリ感をサポート。</p>
-    </div>
+    <div class="scene-img">&#127769; 就寝シーン / ベッドルーム / 間接照明</div>
+    <div class="scene-text"><h4>夜の休息に</h4><p>帰宅後、着替えるだけで「休息モード」ON。寝ている間も血行を促進し、翌朝のスッキリ感をサポート。</p></div>
   </div>
-
   <div class="scene-card">
-    <div class="scene-img light">
-      &#9749; 日中シーン<br>リビング / 在宅ワーク / 休日の外出
-    </div>
-    <div class="scene-text">
-      <h4>日中の活動にも</h4>
-      <p>シンプルなノームコアデザインで、ちょっとした外出にもそのまま。デスクワーク中も着ているだけでケア。</p>
-    </div>
+    <div class="scene-img light">&#9749; 日中シーン / リビング / 在宅ワーク</div>
+    <div class="scene-text"><h4>日中の活動にも</h4><p>シンプルなノームコアデザインで、ちょっとした外出にもそのまま。デスクワーク中も着ているだけでケア。</p></div>
   </div>
 </div>
 
-<!-- ============================================ -->
 <!-- 中間CTA -->
-<!-- ============================================ -->
-<div class="section-label">中間CTA <span class="tag">2回目のCTA</span></div>
-<div class="annotation">
-  <strong>配置理由:</strong> ページ中盤に2回目のCTAを配置。テクノロジー理解+シーン提案で購買意欲が高まったタイミング。<br>
-  Nielsen Norman Group: CTAを3箇所に配置でCVR +25%。
+<div class="section-label">中間CTA <span class="tag">AI Generate Block</span></div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    Horizon AI Generate Prompt <span class="horizon-tag">Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create a centered call-to-action block with a gradient background (from #f8f9fa to #ffffff). Contains a full-width button (max-width 480px, centered) with dark background (#1a1a1a), white text, border-radius 8px, padding 16px, font-size 16px weight 700. Below the button, small centered note text (12px, color #666). The button text should include the product price. Include editable settings for: button text, button color, button text color, button border-radius (4-16px), button padding (12-20px), button font size (14-18px), button max-width (300-600px), note text, section padding top/bottom (16-48px), and gradient colors.</pre>
 </div>
 
 <div class="mid-cta">
-  <button class="cta-btn">カートに追加 &mdash; &yen;16,800</button>
-  <div class="cta-note">送料無料 / 14日間返品可能</div>
+  <button class="cta-btn" style="display:block;width:100%;max-width:480px;margin:0 auto 8px;padding:16px;background:var(--cta);color:var(--cta-text);border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;">カートに追加 &mdash; &yen;16,800</button>
+  <div class="cta-note" style="font-size:12px;color:var(--text-sub);">送料無料 / 14日間返品可能</div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 8: 競合比較 -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 8: 他社比較チャート <span class="tag">価格優位性</span></div>
-<div class="annotation">
-  <strong>設計意図:</strong> ECLEARの最大の武器「価格」を可視化。ブランド名は伏せてA/B/C社表記。<br>
-  Amazon A+設計書と同じロジックだが、Shopify版ではより大胆にデザインできる。<br>
-  コラントッテは「管理医療機器」で差別化しているため、この点は含めない方が安全。
+<div class="section-label">SECTION 8: 競合比較 <span class="tag">AI Generate Block</span></div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    Horizon AI Generate Prompt <span class="horizon-tag">Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create a product comparison table block. Section has centered heading (20px mobile, 28px desktop, weight 800) and subheading (13px, color #666). Table is full-width with 5 columns. First column is feature names (left-aligned, weight 600). Remaining columns are competitor labels. The second column (our product) should have a highlighted header (background #0d5e8a, white text) and highlighted cells (background #f0f7ff). Use checkmarks for supported features (color #059669), crosses for unsupported (color #999). Price row should have our price in red (#dc2626), weight 800, font-size 14px. Table cells: padding 10px 8px, border-bottom 1px solid #e5e7eb. On mobile the table should scroll horizontally if needed. Include editable settings for: number of comparison columns (3-5), heading text, subheading text, section background color, highlight column color, each row's feature name and values, section padding (24-64px), table font size (11-14px), heading font size (16-32px), and header background color.</pre>
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> テーブル横スクロール対応（overflow-x: auto） |
+  <span class="bp">Desktop</span> テーブルフル幅表示
+</div>
+<div class="settings-spec">
+  <strong>調整可能な設定:</strong><br>
+  - Comparison columns: <code>3〜5</code> / Highlight column BG: <code>#f0f7ff</code><br>
+  - Header BG color: <code>#0d5e8a</code> / Table font size: <code>11〜14px</code><br>
+  - Heading font size: <code>16〜32px</code> / Section padding: <code>24〜64px</code><br>
+  - Each cell text editable / Section BG color
 </div>
 
 <div class="content-section alt-bg">
   <div class="section-heading">リカバリーウェア比較</div>
   <div class="section-subheading">同等の効能を、適正価格で</div>
-
+  <div style="overflow-x:auto;">
   <table class="compare-table">
-    <thead>
-      <tr>
-        <th></th>
-        <th class="eclear-col header">ECLEAR</th>
-        <th>A社</th>
-        <th>B社</th>
-        <th>C社</th>
-      </tr>
-    </thead>
+    <thead><tr><th></th><th class="eclear-col header">ECLEAR</th><th>A社</th><th>B社</th><th>C社</th></tr></thead>
     <tbody>
-      <tr>
-        <td>一般医療機器</td>
-        <td class="eclear-col check">&#10003;</td>
-        <td class="check">&#10003;</td>
-        <td class="check">&#10003;</td>
-        <td class="check">&#10003;</td>
-      </tr>
-      <tr>
-        <td>遠赤外線技術</td>
-        <td class="eclear-col check">&#10003;</td>
-        <td class="check">&#10003;</td>
-        <td class="check">&#10003;</td>
-        <td class="cross">&#9472;</td>
-      </tr>
-      <tr>
-        <td>綿混紡</td>
-        <td class="eclear-col check" style="font-weight:800;">&#10003;</td>
-        <td class="cross">&#10005;</td>
-        <td class="cross">&#10005;</td>
-        <td class="cross">&#10005;</td>
-      </tr>
-      <tr>
-        <td>フラットシーム</td>
-        <td class="eclear-col check">&#10003;</td>
-        <td class="cross">&#9651;</td>
-        <td class="check">&#10003;</td>
-        <td class="cross">&#9651;</td>
-      </tr>
-      <tr>
-        <td>セット価格</td>
-        <td class="eclear-col price-highlight">&yen;16,800</td>
-        <td>&yen;24,000台</td>
-        <td>&yen;24,000台</td>
-        <td>&yen;36,000台</td>
-      </tr>
+      <tr><td>一般医療機器</td><td class="eclear-col check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>遠赤外線技術</td><td class="eclear-col check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="cross">&#9472;</td></tr>
+      <tr><td>綿混紡</td><td class="eclear-col check" style="font-weight:800;">&#10003;</td><td class="cross">&#10005;</td><td class="cross">&#10005;</td><td class="cross">&#10005;</td></tr>
+      <tr><td>フラットシーム</td><td class="eclear-col check">&#10003;</td><td class="cross">&#9651;</td><td class="check">&#10003;</td><td class="cross">&#9651;</td></tr>
+      <tr><td>セット価格</td><td class="eclear-col price-highlight">&yen;16,800</td><td>&yen;24,000台</td><td>&yen;24,000台</td><td>&yen;36,000台</td></tr>
     </tbody>
   </table>
+  </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 9: レビュー -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 9: カスタマーレビュー <span class="tag">社会的証明</span></div>
-<div class="annotation critical">
-  <strong>CVR直結:</strong> レビュー件数100件超で信頼度が飛躍的に向上（調査データ）。<br>
-  現在Judge.me導入済み。写真付きレビュー収集を強化すべき。BAKUNEは4,000件超。<br>
-  <strong>UGC写真:</strong> stock画像比で CVR +35%。レビュー投稿時に写真アップロードを強く促す仕組みが必要。
+<div class="section-label">SECTION 9: レビュー <span class="tag">Judge.me Widget</span></div>
+<div class="annotation">
+  <strong>実装方法:</strong> Judge.me アプリのウィジェットを使用。AI Generate不要。<br>
+  テーマエディタ > App embed > Judge.me Review Widget で配置。
+</div>
+<div class="settings-spec">
+  <strong>Judge.me設定:</strong><br>
+  - Widget layout: <code>Summary + Individual reviews</code><br>
+  - Show rating distribution bars: <code>ON</code> / Show photos: <code>ON</code><br>
+  - Reviews per page: <code>5</code>（調整可能） / Sort default: <code>Most recent</code><br>
+  - Review card border-radius: <code>10px</code> / Star color: <code>#f59e0b</code>（調整可能）
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> レビューカード縦積み |
+  <span class="bp">Desktop</span> レビューカード2列グリッド。サマリーはフル幅。
 </div>
 
 <div class="content-section">
   <div class="section-heading">お客様の声</div>
-
   <div class="review-summary">
     <div class="score">
       <div class="num">4.6</div>
@@ -1258,81 +733,57 @@
       <div class="total">127件</div>
     </div>
     <div class="review-bars">
-      <div class="review-bar-row">
-        <span class="label">5</span>
-        <div class="bar"><div class="fill" style="width:72%"></div></div>
-        <span class="count">91</span>
-      </div>
-      <div class="review-bar-row">
-        <span class="label">4</span>
-        <div class="bar"><div class="fill" style="width:18%"></div></div>
-        <span class="count">23</span>
-      </div>
-      <div class="review-bar-row">
-        <span class="label">3</span>
-        <div class="bar"><div class="fill" style="width:7%"></div></div>
-        <span class="count">9</span>
-      </div>
-      <div class="review-bar-row">
-        <span class="label">2</span>
-        <div class="bar"><div class="fill" style="width:2%"></div></div>
-        <span class="count">3</span>
-      </div>
-      <div class="review-bar-row">
-        <span class="label">1</span>
-        <div class="bar"><div class="fill" style="width:1%"></div></div>
-        <span class="count">1</span>
-      </div>
+      <div class="review-bar-row"><span class="label">5</span><div class="bar"><div class="fill" style="width:72%"></div></div><span class="count">91</span></div>
+      <div class="review-bar-row"><span class="label">4</span><div class="bar"><div class="fill" style="width:18%"></div></div><span class="count">23</span></div>
+      <div class="review-bar-row"><span class="label">3</span><div class="bar"><div class="fill" style="width:7%"></div></div><span class="count">9</span></div>
+      <div class="review-bar-row"><span class="label">2</span><div class="bar"><div class="fill" style="width:2%"></div></div><span class="count">3</span></div>
+      <div class="review-bar-row"><span class="label">1</span><div class="bar"><div class="fill" style="width:1%"></div></div><span class="count">1</span></div>
     </div>
   </div>
-
-  <div class="review-card">
-    <div class="review-header">
-      <span class="reviewer">T.K. さん</span>
-      <span class="review-date">2026/03/05</span>
+  <div class="review-cards-wrap">
+    <div class="review-card">
+      <div class="review-header"><span class="reviewer">T.K. さん</span><span class="review-date">2026/03/05</span></div>
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="review-text">BAKUNEと迷いましたが、綿混紡の肌触りが決め手でした。汗をかいてもべたつかず、朝まで快適に眠れます。</div>
+      <span class="review-tag">サイズ: M / カラー: ブラック</span>
     </div>
-    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-    <div class="review-text">
-      BAKUNEと迷いましたが、綿混紡の肌触りが決め手でした。汗をかいてもべたつかず、朝まで快適に眠れます。価格もリーズナブルで大満足。
+    <div class="review-card">
+      <div class="review-header"><span class="reviewer">M.S. さん</span><span class="review-date">2026/02/28</span></div>
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <div class="review-text">在宅ワーク中もこれ1枚。オーバーサイズでリラックスできるし、買い物にもそのまま行けるデザインがいい。</div>
+      <span class="review-tag">サイズ: L / カラー: ネイビー</span>
     </div>
-    <span class="review-tag">サイズ: M / カラー: ブラック</span>
-  </div>
-
-  <div class="review-card">
-    <div class="review-header">
-      <span class="reviewer">M.S. さん</span>
-      <span class="review-date">2026/02/28</span>
-    </div>
-    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-    <div class="review-text">
-      在宅ワーク中もこれ1枚。オーバーサイズでリラックスできるし、ちょっとした買い物にもそのまま行けるデザインがいい。
-    </div>
-    <span class="review-tag">サイズ: L / カラー: ネイビー</span>
-  </div>
-
-  <div style="text-align:center;padding:12px;">
-    <a href="#" style="color:var(--accent);font-size:14px;font-weight:600;">すべてのレビューを見る &rarr;</a>
   </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 10: サイズガイド -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 10: サイズガイド</div>
-<div class="annotation">
-  <strong>設計意図:</strong> アパレル購入者の89%がサイズガイドを確認。サイズ不安はカゴ落ち最大要因の1つ。<br>
-  モバイルではモーダル表示がベスト。ここではページ内に展開する形で設計。<br>
-  <strong>推奨追加:</strong> モデル身長・体重情報、「迷ったら大きめ推奨」のアドバイス。
+<div class="section-label">SECTION 10: サイズガイド <span class="tag">AI Generate Block</span></div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    Horizon AI Generate Prompt <span class="horizon-tag">Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create a size guide table block with a centered heading (20px, weight 800) and model info subheading (13px, color #666). The table should be full-width with clean styling: header row with #f8f9fa background, weight 600. Table cells: padding 8px, 1px border #e5e7eb, centered text, font-size 12px. One row should be highlighted with light blue background (#f0f7ff) and weight 600 to indicate the recommended size. Below the table, add centered help text (12px, color #666). The table should scroll horizontally on small screens. Include editable settings for: heading text, subheading text (model info), number of size rows (3-8), number of columns (3-6), each column header text, each cell value, highlighted row index, help text, section padding (24-64px), table font size (11-14px), heading font size (16-28px), header background color, highlight row color, and section background color.</pre>
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> テーブル横スクロール |
+  <span class="bp">Desktop</span> テーブルフル幅（max-width: 600px中央揃え）
+</div>
+<div class="settings-spec">
+  <strong>調整可能な設定:</strong><br>
+  - Rows: <code>3〜8</code> / Columns: <code>3〜6</code> / Highlighted row index<br>
+  - Table font size: <code>11〜14px</code> / Heading font size: <code>16〜28px</code><br>
+  - Header BG color / Highlight row color / Section BG color / Padding: <code>24〜64px</code>
 </div>
 
 <div class="content-section alt-bg">
   <div class="section-heading">サイズガイド</div>
-  <div class="section-subheading">モデル: 男性175cm/65kg → Lサイズ着用</div>
-
+  <div class="section-subheading">モデル: 男性175cm/65kg &rarr; Lサイズ着用</div>
+  <div style="overflow-x:auto;">
   <table class="size-table">
-    <thead>
-      <tr><th>サイズ</th><th>身長</th><th>胸囲</th><th>着丈</th><th>ウエスト</th></tr>
-    </thead>
+    <thead><tr><th>サイズ</th><th>身長</th><th>胸囲</th><th>着丈</th><th>ウエスト</th></tr></thead>
     <tbody>
       <tr><td>S</td><td>155-165</td><td>88</td><td>66</td><td>64-77</td></tr>
       <tr><td>M</td><td>165-175</td><td>96</td><td>70</td><td>69-84</td></tr>
@@ -1341,300 +792,165 @@
       <tr><td>XXL</td><td>180-190</td><td>120</td><td>82</td><td>84-102</td></tr>
     </tbody>
   </table>
-
+  </div>
   <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-sub);">
-    ※ ゆったりとした着心地のため、普段のサイズでOK<br>
-    ※ 迷った場合は大きめサイズをおすすめします
+    ※ ゆったりとした着心地のため、普段のサイズでOK<br>※ 迷った場合は大きめサイズをおすすめします
   </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 11: FAQ -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 11: FAQ（よくある質問）</div>
-<div class="annotation">
-  <strong>設計意図:</strong> アコーディオン形式、5〜8問に絞る。購入前の不安を最終解消。<br>
-  CTA直前に配置し、FAQ読了→即購入の導線を設計。
+<div class="section-label">SECTION 11: FAQ <span class="tag">AI Generate Block</span></div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    Horizon AI Generate Prompt <span class="horizon-tag">Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create an FAQ accordion block. Section heading centered (20px mobile, 28px desktop, weight 800). Each FAQ item has a question row (14px, weight 600) with a "+" toggle icon on the right (18px, color #999) that rotates 45 degrees when opened. Answer text (13px, color #666, line-height 1.6) slides open with a smooth max-height CSS transition (300ms). Items separated by 1px border-bottom #e5e7eb. First item should be open by default. On desktop, max-width 700px centered. Include editable settings for: heading text, number of FAQ items (3-10), each item's question and answer text, toggle icon character, section padding (24-64px), question font size (13-18px), answer font size (12-15px), border color, section background color, section max-width on desktop (500-900px), and open/closed transition duration.</pre>
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> フル幅 |
+  <span class="bp">Desktop</span> max-width: 700px 中央揃え
+</div>
+<div class="settings-spec">
+  <strong>調整可能な設定:</strong><br>
+  - FAQ items: <code>3〜10</code> / Question font size: <code>13〜18px</code> / Answer font size: <code>12〜15px</code><br>
+  - Desktop max-width: <code>500〜900px</code> / Border color / Section BG / Padding: <code>24〜64px</code><br>
+  - Transition duration: <code>200〜500ms</code>
 </div>
 
 <div class="content-section">
   <div class="section-heading">よくある質問</div>
-
-  <div class="faq-item open">
-    <div class="faq-q">
-      洗濯しても効果は持続しますか？
-      <span class="toggle">+</span>
+  <div style="max-width:700px;margin:16px auto 0;">
+    <div class="faq-item open">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">洗濯しても効果は持続しますか？<span class="toggle">+</span></div>
+      <div class="faq-a">はい。Medilect&#8482;のセラミックスは繊維に練り込まれているため、繰り返しの洗濯でも効果は持続します。</div>
     </div>
-    <div class="faq-a">
-      はい。Medilect™のセラミックスは繊維に練り込まれているため、繰り返しの洗濯でも効果は持続します。ネットに入れて洗濯機で洗えます。
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">他のリカバリーウェアとの違いは？<span class="toggle">+</span></div>
+      <div class="faq-a">ECLEARは綿20%混紡で吸湿性に優れた肌触りが特徴です。同等効能を適正価格で提供しています。</div>
     </div>
-  </div>
-
-  <div class="faq-item">
-    <div class="faq-q">
-      効果はいつ頃から実感できますか？
-      <span class="toggle">+</span>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">返品・交換はできますか？<span class="toggle">+</span></div>
+      <div class="faq-a">商品到着後14日以内で未使用・未開封の場合、返品・交換可能です。サイズ交換は1回無料。</div>
     </div>
-    <div class="faq-a">
-      着用直後から血行促進効果が働きます。体感には個人差がありますが、継続的な着用をおすすめします。
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <div class="faq-q">
-      他のリカバリーウェアとの違いは？
-      <span class="toggle">+</span>
-    </div>
-    <div class="faq-a">
-      ECLEARは綿20%混紡で吸湿性に優れた肌触りが特徴です。一般医療機器認定の同等効能を、適正価格で提供しています。
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <div class="faq-q">
-      返品・交換はできますか？
-      <span class="toggle">+</span>
-    </div>
-    <div class="faq-a">
-      商品到着後14日以内であれば、未使用・未開封の商品に限り返品・交換を承ります。サイズ交換は1回無料です。
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <div class="faq-q">
-      敏感肌でも着用できますか？
-      <span class="toggle">+</span>
-    </div>
-    <div class="faq-a">
-      綿20%混紡で肌あたりが柔らかく、フラットシーム縫製で縫い目の刺激を最小限に抑えています。敏感肌の方にもご好評いただいています。
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">敏感肌でも着用できますか？<span class="toggle">+</span></div>
+      <div class="faq-a">綿20%混紡で肌あたりが柔らかく、フラットシーム縫製で刺激を最小限に抑えています。</div>
     </div>
   </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 12: 保証・安心 -->
+<!-- SECTION 12: 安心ポイント -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 12: 安心ポイント</div>
-<div class="annotation">
-  <strong>設計意図:</strong> 高単価商品の最終ハードル「本当に大丈夫？」を解消。<br>
-  リライブシャツの30日全額返金がCVRに大きく寄与している。ECLEARも返品ポリシー強化を推奨。
+<div class="section-label">SECTION 12: 安心ポイント <span class="tag">AI Generate Block</span></div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    Horizon AI Generate Prompt <span class="horizon-tag">Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create a trust/guarantee grid block. Layout: 2 columns on mobile, 4 columns on desktop. Each item is a centered card with: an icon/emoji (24px, margin-bottom 6px), bold heading (13px, weight 700), description text (11px, color #666). Cards have 1px border #e5e7eb, border-radius 10px, padding 16px 8px. Light gray section background (#f8f9fa). Include editable settings for: number of items (2-6), columns mobile (1-2), columns desktop (2-4), each item's icon, heading, description, card border-radius (0-20px), card padding, section padding (24-64px), icon size (18-36px), heading font size (12-16px), description font size (10-13px), section background color, and card border color.</pre>
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> 2列グリッド |
+  <span class="bp">Desktop</span> 4列グリッド
 </div>
 
 <div class="content-section alt-bg">
   <div class="guarantee-grid">
-    <div class="guarantee-item">
-      <div class="g-icon">&#128666;</div>
-      <h4>送料無料</h4>
-      <p>全国どこでも送料無料</p>
-    </div>
-    <div class="guarantee-item">
-      <div class="g-icon">&#128260;</div>
-      <h4>14日間返品OK</h4>
-      <p>サイズ交換1回無料</p>
-    </div>
-    <div class="guarantee-item">
-      <div class="g-icon">&#128274;</div>
-      <h4>安全な決済</h4>
-      <p>SSL暗号化+3Dセキュア</p>
-    </div>
-    <div class="guarantee-item">
-      <div class="g-icon">&#127973;</div>
-      <h4>エレコム品質</h4>
-      <p>PC周辺機器トップ企業の品質基準</p>
-    </div>
+    <div class="guarantee-item"><div class="g-icon">&#128666;</div><h4>送料無料</h4><p>全国どこでも無料</p></div>
+    <div class="guarantee-item"><div class="g-icon">&#128260;</div><h4>14日間返品OK</h4><p>サイズ交換1回無料</p></div>
+    <div class="guarantee-item"><div class="g-icon">&#128274;</div><h4>安全な決済</h4><p>SSL+3Dセキュア</p></div>
+    <div class="guarantee-item"><div class="g-icon">&#127973;</div><h4>エレコム品質</h4><p>トップ企業の品質基準</p></div>
   </div>
 </div>
 
-<!-- ============================================ -->
 <!-- 最終CTA -->
-<!-- ============================================ -->
-<div class="section-label">最終CTA <span class="tag">3回目のCTA</span></div>
-<div class="annotation">
-  <strong>配置理由:</strong> FAQ+保証セクション直後。全ての不安解消後の最終訴求ポイント。<br>
-  ここまでスクロールしたユーザーは購入意欲が高い。価格+送料無料を再表示。
-</div>
-
+<div class="section-label">最終CTA <span class="tag">中間CTAと同一ブロック再利用</span></div>
 <div class="mid-cta">
-  <button class="cta-btn">カートに追加 &mdash; &yen;16,800（税込・送料無料）</button>
-  <div class="cta-note">一般医療機器 | 届出番号: 13B1X10360000059</div>
+  <button class="cta-btn" style="display:block;width:100%;max-width:480px;margin:0 auto 8px;padding:16px;background:var(--cta);color:var(--cta-text);border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;">カートに追加 &mdash; &yen;16,800（税込・送料無料）</button>
+  <div class="cta-note" style="font-size:12px;color:var(--text-sub);">一般医療機器 | 届出番号: 13B1X10360000059</div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 13: 関連商品 -->
 <!-- ============================================ -->
-<div class="section-label">SECTION 13: 関連商品・クロスセル</div>
+<div class="section-label">SECTION 13: 関連商品 <span class="tag">Horizon: product-recommendations</span></div>
 <div class="annotation">
-  <strong>設計意図:</strong> 上下セットを見ている人に単品・半袖セット・関連商品を提案。<br>
-  横スクロールカルーセル。AOV向上を狙う。
+  <strong>Horizon built-in:</strong> <code>product-recommendations.liquid</code> セクション。AI Generate不要。
+</div>
+<div class="settings-spec">
+  <strong>テーマエディタ設定:</strong><br>
+  - Recommendation type: <code>Related</code> / Layout: <code>Grid</code><br>
+  - Max products: <code>4</code>（調整可能 2〜8） / Desktop columns: <code>4</code>（調整可能 2〜4）<br>
+  - Mobile columns: <code>2</code>（調整可能 1〜2） / Show price: <code>ON</code><br>
+  - Card image aspect ratio: <code>1:1</code>（調整可能） / Card border-radius: <code>8px</code>（調整可能）
 </div>
 
 <div class="content-section">
   <div class="section-heading" style="font-size:16px;text-align:left;">こちらもおすすめ</div>
-
   <div class="related-scroll">
-    <div class="related-card">
-      <div class="img-ph">半袖+ハーフパンツ<br>セット</div>
-      <div class="name">半袖ハーフパンツセット</div>
-      <div class="price">&yen;14,800</div>
-    </div>
-    <div class="related-card">
-      <div class="img-ph">長袖トップス<br>単品</div>
-      <div class="name">長袖トップス 単品</div>
-      <div class="price">&yen;8,400</div>
-    </div>
-    <div class="related-card">
-      <div class="img-ph">ロングパンツ<br>単品</div>
-      <div class="name">ロングパンツ 単品</div>
-      <div class="price">&yen;8,400</div>
-    </div>
-    <div class="related-card">
-      <div class="img-ph">リカバリー<br>ネックハグ</div>
-      <div class="name">リカバリーネックハグ</div>
-      <div class="price">&yen;4,980</div>
-    </div>
+    <div class="related-card"><div class="img-ph">半袖+ハーフパンツ</div><div class="name">半袖ハーフパンツセット</div><div class="price">&yen;14,800</div></div>
+    <div class="related-card"><div class="img-ph">長袖トップス単品</div><div class="name">長袖トップス 単品</div><div class="price">&yen;8,400</div></div>
+    <div class="related-card"><div class="img-ph">ロングパンツ単品</div><div class="name">ロングパンツ 単品</div><div class="price">&yen;8,400</div></div>
+    <div class="related-card"><div class="img-ph">ネックハグ</div><div class="name">リカバリーネックハグ</div><div class="price">&yen;4,980</div></div>
   </div>
+</div>
+
+<!-- ============================================ -->
+<!-- STICKY CTA -->
+<!-- ============================================ -->
+<div class="section-label">STICKY CTA <span class="tag">AI Generate Block</span></div>
+<div class="ai-prompt">
+  <div class="prompt-header">
+    Horizon AI Generate Prompt <span class="horizon-tag">Custom Section</span>
+  </div>
+<pre onclick="navigator.clipboard.writeText(this.textContent.trim())">Create a sticky bottom bar that fixes to the bottom of the viewport. The bar has white background, top border 1px solid #e5e7eb, box-shadow 0 -4px 12px rgba(0,0,0,0.08), padding 10px 16px. Contents: price text on the left (18px, weight 800) and a dark button (#1a1a1a, white text, border-radius 8px, padding 14px, font-size 15px weight 700) that fills remaining width (max-width 400px). The bar should only appear when the user scrolls past the main add-to-cart button (use IntersectionObserver). Slide-in animation: translateY(100%) to translateY(0) over 200ms. On desktop, the bar should be centered with max-width 1200px. Include editable settings for: button text, button color, button text color, button border-radius (4-16px), button font size (13-17px), price font size (14-22px), bar padding, bar background color, bar max-width desktop (800-1400px), and show/hide animation duration (100-400ms).</pre>
+</div>
+<div class="annotation critical">
+  <strong>CVR +8〜15%:</strong> 最優先実装。IntersectionObserverでオリジナルCTAが画面外に出たら表示。
+</div>
+<div class="responsive-spec">
+  <strong>Responsive:</strong>
+  <span class="bp">Mobile</span> フル幅。価格左+ボタン右 |
+  <span class="bp">Desktop</span> max-width: 1200px中央揃え。ボタンmax-width: 400px
+</div>
+<div class="settings-spec">
+  <strong>調整可能な設定:</strong><br>
+  - Button text / color / text color / border-radius: <code>4〜16px</code> / font size: <code>13〜17px</code><br>
+  - Price font size: <code>14〜22px</code> / Bar padding / BG color / Max-width desktop: <code>800〜1400px</code><br>
+  - Animation duration: <code>100〜400ms</code>
 </div>
 
 <!-- フッター -->
-<div style="padding:24px 16px;background:#1a1a1a;color:#fff;">
-  <div style="text-align:center;">
-    <div style="font-size:16px;font-weight:700;letter-spacing:0.1em;margin-bottom:8px;">ECLEAR</div>
-    <div style="font-size:11px;color:#999;line-height:1.6;">
-      エレコムヘルスケア公式オンラインストア<br>
-      一般医療機器 | 届出番号: 13B1X10360000059<br>
-      医療機器製造販売業者: エレコム株式会社
-    </div>
+<div style="padding:24px 16px;background:#1a1a1a;color:#fff;text-align:center;">
+  <div style="font-size:16px;font-weight:700;letter-spacing:0.1em;margin-bottom:8px;">ECLEAR</div>
+  <div style="font-size:11px;color:#999;line-height:1.6;">
+    エレコムヘルスケア公式オンラインストア<br>
+    一般医療機器 | 届出番号: 13B1X10360000059
   </div>
 </div>
 
-<!-- フッタースペーサー（スティッキーCTA分） -->
 <div class="footer-spacer"></div>
-
-<!-- ============================================ -->
-<!-- スティッキーCTA（画面下部固定） -->
-<!-- ============================================ -->
-<div class="section-label" style="position:relative;z-index:201;">STICKY CTA（常時表示） <span class="tag">CVR +8〜15%</span></div>
-<div class="annotation critical" style="position:relative;z-index:201;">
-  <strong>最重要施策:</strong> 実装だけでCVR +8〜15%のデータあり。<br>
-  <strong>表示条件:</strong> オリジナルCTAが画面外に出たタイミングで200msスライドインアニメーション。<br>
-  <strong>構成:</strong> 価格 + カートに追加ボタン。バリアント未選択の場合はモーダルで選択させる。<br>
-  <strong>高さ:</strong> 60px以内（コンテンツ表示領域を圧迫しない）。
-</div>
 
 <div class="sticky-cta">
   <div class="price-sm"><span class="yen">&yen;</span>16,800</div>
   <button class="btn-sticky">カートに追加</button>
 </div>
 
-</div><!-- /wireframe-container -->
-
-<!-- ============================================ -->
-<!-- 設計仕様書 -->
-<!-- ============================================ -->
-<div style="max-width:800px;margin:40px auto;padding:0 20px;">
-
-<h1 style="font-size:24px;margin-bottom:24px;padding-bottom:12px;border-bottom:3px solid #1e3a5f;color:#1e3a5f;">
-  設計仕様書
-</h1>
-
-<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">1. タイポグラフィ</h2>
-<table style="width:100%;border-collapse:collapse;font-size:13px;">
-  <tr style="background:#f8f9fa;"><th style="padding:8px;text-align:left;border:1px solid #ddd;">要素</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">フォント</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">サイズ</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">ウェイト</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">行間</th></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">セクション見出し</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">20px</td><td style="padding:8px;border:1px solid #ddd;">800</td><td style="padding:8px;border:1px solid #ddd;">1.4</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">商品タイトル</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">18px</td><td style="padding:8px;border:1px solid #ddd;">700</td><td style="padding:8px;border:1px solid #ddd;">1.4</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">価格（メイン）</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">28px</td><td style="padding:8px;border:1px solid #ddd;">800</td><td style="padding:8px;border:1px solid #ddd;">1.2</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">本文</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">14px</td><td style="padding:8px;border:1px solid #ddd;">400</td><td style="padding:8px;border:1px solid #ddd;">1.6</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">補足テキスト</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">12px</td><td style="padding:8px;border:1px solid #ddd;">400</td><td style="padding:8px;border:1px solid #ddd;">1.5</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">注釈・バッジ</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">10-11px</td><td style="padding:8px;border:1px solid #ddd;">600</td><td style="padding:8px;border:1px solid #ddd;">1.4</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">CTAボタン</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">16px</td><td style="padding:8px;border:1px solid #ddd;">700</td><td style="padding:8px;border:1px solid #ddd;">1.0</td></tr>
-</table>
-
-<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">2. カラーパレット</h2>
-<table style="width:100%;border-collapse:collapse;font-size:13px;">
-  <tr style="background:#f8f9fa;"><th style="padding:8px;text-align:left;border:1px solid #ddd;">用途</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">カラー</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">HEX</th></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">背景（メイン）</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#ffffff;border:1px solid #ddd;vertical-align:middle;"></span> White</td><td style="padding:8px;border:1px solid #ddd;">#FFFFFF</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">背景（交互セクション）</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#f8f9fa;border:1px solid #ddd;vertical-align:middle;"></span> Light Gray</td><td style="padding:8px;border:1px solid #ddd;">#F8F9FA</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">テキスト（メイン）</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#1a1a1a;vertical-align:middle;"></span> Near Black</td><td style="padding:8px;border:1px solid #ddd;">#1A1A1A</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">テキスト（サブ）</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#666666;vertical-align:middle;"></span> Gray</td><td style="padding:8px;border:1px solid #ddd;">#666666</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">CTAボタン</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#1a1a1a;vertical-align:middle;"></span> Black</td><td style="padding:8px;border:1px solid #ddd;">#1A1A1A</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">ブランドアクセント</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#0d5e8a;vertical-align:middle;"></span> ECLEAR Blue</td><td style="padding:8px;border:1px solid #ddd;">#0D5E8A</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">リンク</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#2563eb;vertical-align:middle;"></span> Blue</td><td style="padding:8px;border:1px solid #ddd;">#2563EB</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">スター評価</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#f59e0b;vertical-align:middle;"></span> Amber</td><td style="padding:8px;border:1px solid #ddd;">#F59E0B</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">割引・警告</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#dc2626;vertical-align:middle;"></span> Red</td><td style="padding:8px;border:1px solid #ddd;">#DC2626</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">ボーダー</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#e5e7eb;border:1px solid #ddd;vertical-align:middle;"></span> Light Border</td><td style="padding:8px;border:1px solid #ddd;">#E5E7EB</td></tr>
-</table>
-
-<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">3. スペーシング</h2>
-<table style="width:100%;border-collapse:collapse;font-size:13px;">
-  <tr style="background:#f8f9fa;"><th style="padding:8px;text-align:left;border:1px solid #ddd;">要素</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">値</th></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">ページ左右パディング</td><td style="padding:8px;border:1px solid #ddd;">16px</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">セクション上下パディング</td><td style="padding:8px;border:1px solid #ddd;">32px</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">カード内パディング</td><td style="padding:8px;border:1px solid #ddd;">12-16px</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">セクション見出し〜コンテンツ間</td><td style="padding:8px;border:1px solid #ddd;">24px</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">カード間ギャップ</td><td style="padding:8px;border:1px solid #ddd;">12px</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">ボーダー半径（カード）</td><td style="padding:8px;border:1px solid #ddd;">10px</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">ボーダー半径（ボタン）</td><td style="padding:8px;border:1px solid #ddd;">8px</td></tr>
-</table>
-
-<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">4. セクション構成とCVR期待効果</h2>
-<table style="width:100%;border-collapse:collapse;font-size:13px;">
-  <tr style="background:#f8f9fa;">
-    <th style="padding:8px;text-align:left;border:1px solid #ddd;">順番</th>
-    <th style="padding:8px;text-align:left;border:1px solid #ddd;">セクション</th>
-    <th style="padding:8px;text-align:left;border:1px solid #ddd;">目的</th>
-    <th style="padding:8px;text-align:left;border:1px solid #ddd;">CVR寄与</th>
-  </tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">0</td><td style="padding:8px;border:1px solid #ddd;">ヘッダー（sticky）</td><td style="padding:8px;border:1px solid #ddd;">ブランド認知+カートアクセス</td><td style="padding:8px;border:1px solid #ddd;">-</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">1</td><td style="padding:8px;border:1px solid #ddd;">画像ギャラリー</td><td style="padding:8px;border:1px solid #ddd;">第一印象・商品理解</td><td style="padding:8px;border:1px solid #ddd;">最重要</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">2</td><td style="padding:8px;border:1px solid #ddd;">商品情報+バリアント</td><td style="padding:8px;border:1px solid #ddd;">購入判断の基本情報</td><td style="padding:8px;border:1px solid #ddd;">最重要</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">3</td><td style="padding:8px;border:1px solid #ddd;">CTA（1回目）</td><td style="padding:8px;border:1px solid #ddd;">即決ユーザーの刈り取り</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">4</td><td style="padding:8px;border:1px solid #ddd;">悩み共感</td><td style="padding:8px;border:1px solid #ddd;">自分ごと化・課題認識</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">5</td><td style="padding:8px;border:1px solid #ddd;">テクノロジー解説</td><td style="padding:8px;border:1px solid #ddd;">「なぜ効くのか」の納得</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">6</td><td style="padding:8px;border:1px solid #ddd;">設計こだわり</td><td style="padding:8px;border:1px solid #ddd;">機能的価値の訴求</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">7</td><td style="padding:8px;border:1px solid #ddd;">使用シーン</td><td style="padding:8px;border:1px solid #ddd;">利用イメージの具体化</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">中間CTA（2回目）</td><td style="padding:8px;border:1px solid #ddd;">理解後の購入促進</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">8</td><td style="padding:8px;border:1px solid #ddd;">競合比較</td><td style="padding:8px;border:1px solid #ddd;">価格優位性の可視化</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">9</td><td style="padding:8px;border:1px solid #ddd;">レビュー</td><td style="padding:8px;border:1px solid #ddd;">社会的証明</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">10</td><td style="padding:8px;border:1px solid #ddd;">サイズガイド</td><td style="padding:8px;border:1px solid #ddd;">サイズ不安の解消</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">11</td><td style="padding:8px;border:1px solid #ddd;">FAQ</td><td style="padding:8px;border:1px solid #ddd;">残りの不安解消</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">12</td><td style="padding:8px;border:1px solid #ddd;">安心ポイント</td><td style="padding:8px;border:1px solid #ddd;">最終的な信頼構築</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">最終CTA（3回目）</td><td style="padding:8px;border:1px solid #ddd;">熟慮ユーザーの刈り取り</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">13</td><td style="padding:8px;border:1px solid #ddd;">関連商品</td><td style="padding:8px;border:1px solid #ddd;">AOV向上・離脱防止</td><td style="padding:8px;border:1px solid #ddd;">低</td></tr>
-  <tr><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">スティッキーCTA</td><td style="padding:8px;border:1px solid #ddd;">常時購入アクセス</td><td style="padding:8px;border:1px solid #ddd;">+8〜15%</td></tr>
-</table>
-
-<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">5. 即効性の高い施策（優先度順）</h2>
-<ol style="font-size:14px;line-height:2;">
-  <li><strong>スティッキーCTA実装</strong> — 実装のみでCVR +8〜15%（データ実証済み）</li>
-  <li><strong>商品画像の高品質化・枚数増加</strong> — 現状から8〜10枚に。ライフスタイル写真追加</li>
-  <li><strong>レビュー表示の強化</strong> — 星評価サマリー+写真付きレビュー+バー分布表示</li>
-  <li><strong>バリアント選択のボタン化</strong> — ドロップダウン廃止、ボタンセレクターに変更</li>
-  <li><strong>信頼バッジの追加</strong> — CTA直下に「送料無料/安全決済/返品可」を配置</li>
-  <li><strong>悩み共感セクション追加</strong> — ページ下部への商品説明コンテンツ拡充</li>
-  <li><strong>競合比較チャート</strong> — 価格優位性を一目で伝える比較表</li>
-  <li><strong>FAQ追加</strong> — アコーディオン形式で5〜8問</li>
-  <li><strong>セット割引率の見直し</strong> — 現在の&yen;160差は弱い。10%以上の割引率を推奨</li>
-</ol>
-
-<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">6. 薬機法コンプライアンス</h2>
-<div style="font-size:13px;line-height:1.8;background:#fef2f2;padding:16px;border-radius:8px;border:1px solid #fecaca;">
-  <strong style="color:#991b1b;">使える表現:</strong> 血行を促進 / 筋肉のハリ・コリを緩和 / 筋肉の疲労軽減 / 疲労回復<br>
-  <strong style="color:#991b1b;">使えない表現:</strong> 「すぐ効く」「○日で実感」「治る」「改善する」等の即効性・治療表現<br>
-  <strong style="color:#991b1b;">体験談:</strong> 個人の感想による効能暗示はNG<br>
-  <strong style="color:#991b1b;">必須表記:</strong> 届出番号（13B1X10360000059）、一般医療機器の表記
 </div>
 
-<div style="margin-top:40px;padding:20px;background:#f0f7ff;border-radius:8px;font-size:13px;line-height:1.6;">
-  <strong>競合分析ソース:</strong><br>
-  BAKUNE (TENTIAL) / VENEX / SIXPAD Recovery Wear (MTG) / コラントッテ RESNO / リライブシャツ<br>
-  CVRベストプラクティス: Shopify公式 / Baymard Institute / Nielsen Norman Group / GrowthRock AB Test<br>
-  <br>
-  <strong>制作日:</strong> 2026-03-11<br>
-  <strong>対象:</strong> shop.elecom-hc.co.jp 商品ページ<br>
-  <strong>対象商品:</strong> ECLEAR リカバリーウェア 長袖トップス+ロングパンツ セット
-</div>
-
-</div>
+<script>
+function setView(mode) {
+  document.body.classList.remove('desktop-view', 'tablet-view');
+  if (mode === 'desktop') document.body.classList.add('desktop-view');
+  if (mode === 'tablet') document.body.classList.add('tablet-view');
+  document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>
 
 </body>
 </html>
