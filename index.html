@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECLEAR リカバリーウェア 商品ページ ワイヤーフレーム</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --text-sub: #666666;
+    --text-light: #999999;
+    --accent: #2563eb;
+    --cta: #1a1a1a;
+    --cta-text: #ffffff;
+    --badge-bg: #0d5e8a;
+    --badge-text: #ffffff;
+    --star: #f59e0b;
+    --border: #e5e7eb;
+    --section-bg: #f8f9fa;
+    --red: #dc2626;
+    --green: #059669;
+    --navy: #1e3a5f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    color: var(--text);
+    background: #f0f0f0;
+    line-height: 1.6;
+  }
+
+  /* ワイヤーフレーム全体 */
+  .wireframe-container {
+    max-width: 430px;
+    margin: 0 auto;
+    background: var(--bg);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0,0,0,0.15);
+  }
+
+  /* 注釈システム */
+  .annotation {
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    padding: 8px 12px;
+    margin: 4px 0;
+    font-size: 11px;
+    color: #92400e;
+    line-height: 1.5;
+  }
+  .annotation strong { color: #78350f; }
+  .annotation.critical {
+    background: #fef2f2;
+    border-left-color: var(--red);
+    color: #991b1b;
+  }
+  .annotation.critical strong { color: #7f1d1d; }
+
+  /* セクション区切り */
+  .section-label {
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .section-label .tag {
+    background: rgba(255,255,255,0.2);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 400;
+  }
+
+  /* ===== ヘッダー ===== */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 100;
+  }
+  .header-logo { font-size: 16px; font-weight: 700; letter-spacing: 0.1em; }
+  .header-logo span { color: var(--badge-bg); }
+  .header-icons { display: flex; gap: 16px; font-size: 18px; }
+
+  /* ===== 画像ギャラリー ===== */
+  .gallery {
+    position: relative;
+    background: #f5f5f5;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gallery-placeholder {
+    text-align: center;
+    color: var(--text-sub);
+  }
+  .gallery-placeholder .icon { font-size: 48px; margin-bottom: 8px; opacity: 0.4; }
+  .gallery-placeholder p { font-size: 12px; }
+  .gallery-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+  }
+  .gallery-dots span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.2);
+  }
+  .gallery-dots span.active { background: var(--text); }
+  .gallery-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .gallery-thumbs {
+    display: flex;
+    gap: 4px;
+    padding: 8px 16px;
+    overflow-x: auto;
+  }
+  .gallery-thumbs .thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 4px;
+    background: #e8e8e8;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: var(--text-sub);
+    text-align: center;
+    border: 2px solid transparent;
+  }
+  .gallery-thumbs .thumb.active { border-color: var(--text); }
+
+  /* ===== 商品情報 ===== */
+  .product-info { padding: 16px; }
+  .product-badges {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .product-badges .badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+  .badge-medical { background: #dbeafe; color: #1e40af; }
+  .badge-set { background: #dcfce7; color: #166534; }
+  .badge-free-ship { background: #f3e8ff; color: #6b21a8; }
+
+  .product-title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .product-subtitle {
+    font-size: 13px;
+    color: var(--text-sub);
+    margin-bottom: 12px;
+  }
+
+  /* 評価 */
+  .rating-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .stars { color: var(--star); font-size: 16px; letter-spacing: 1px; }
+  .rating-score { font-size: 14px; font-weight: 700; }
+  .rating-count { font-size: 13px; color: var(--accent); text-decoration: underline; }
+
+  /* 価格 */
+  .price-area { margin-bottom: 16px; }
+  .price-current {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .price-current .yen { font-size: 16px; font-weight: 600; }
+  .price-current .tax { font-size: 12px; font-weight: 400; color: var(--text-sub); }
+  .price-compare {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .price-original {
+    font-size: 14px;
+    color: var(--text-light);
+    text-decoration: line-through;
+  }
+  .price-save {
+    font-size: 12px;
+    color: var(--red);
+    font-weight: 700;
+    background: #fef2f2;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  /* セット内容 */
+  .set-contents {
+    background: var(--section-bg);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .set-contents-title {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-sub);
+  }
+  .set-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 13px;
+  }
+  .set-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    flex-shrink: 0;
+  }
+
+  /* カラー選択 */
+  .variant-section { margin-bottom: 16px; }
+  .variant-label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .variant-label span { font-weight: 400; color: var(--text-sub); }
+  .color-swatches {
+    display: flex;
+    gap: 10px;
+  }
+  .swatch {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    position: relative;
+    cursor: pointer;
+  }
+  .swatch.active { border-color: var(--text); }
+  .swatch.active::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border: 1.5px solid var(--text);
+    border-radius: 50%;
+  }
+  .swatch-black { background: #1a1a1a; }
+  .swatch-navy { background: #1e3a5f; }
+
+  /* サイズ選択 */
+  .size-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .size-btn {
+    min-width: 56px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #fff;
+  }
+  .size-btn.active {
+    border-color: var(--text);
+    background: var(--text);
+    color: #fff;
+  }
+  .size-btn.soldout {
+    opacity: 0.35;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+  .size-guide-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 8px;
+    text-decoration: underline;
+  }
+
+  /* CTAエリア */
+  .cta-area { padding: 0 16px 16px; }
+  .cta-primary {
+    width: 100%;
+    padding: 16px;
+    background: var(--cta);
+    color: var(--cta-text);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .cta-secondary {
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    color: var(--text);
+    border: 1.5px solid var(--text);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+  .payment-icons {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .payment-icons span {
+    font-size: 10px;
+    background: var(--section-bg);
+    padding: 4px 8px;
+    border-radius: 3px;
+    color: var(--text-sub);
+  }
+
+  /* 信頼バー */
+  .trust-bar {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--text-sub);
+  }
+  .trust-item .icon { font-size: 14px; }
+
+  /* コンテンツセクション共通 */
+  .content-section { padding: 32px 16px; }
+  .content-section.alt-bg { background: var(--section-bg); }
+  .section-heading {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .section-subheading {
+    font-size: 13px;
+    color: var(--text-sub);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  /* 悩み共感 */
+  .pain-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .pain-card {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .pain-card .icon-box {
+    width: 48px; height: 48px;
+    background: #fee2e2;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .pain-card .text h4 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .pain-card .text p { font-size: 12px; color: var(--text-sub); line-height: 1.5; }
+
+  .solution-bridge {
+    text-align: center;
+    padding: 24px 16px;
+    font-size: 14px;
+    color: var(--text-sub);
+    line-height: 1.8;
+  }
+  .solution-bridge strong {
+    color: var(--text);
+    font-size: 18px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* テクノロジー */
+  .tech-visual {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1b3a4b 100%);
+    border-radius: 12px;
+    padding: 24px 20px;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .tech-visual h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .tech-visual .subtitle {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-bottom: 16px;
+  }
+  .tech-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tech-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .tech-step .num {
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .tech-step .desc { font-size: 13px; line-height: 1.5; }
+
+  /* 5つのこだわり */
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .feature-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .feature-card .img-placeholder {
+    aspect-ratio: 4/3;
+    background: #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text-sub);
+  }
+  .feature-card .feature-text {
+    padding: 10px;
+  }
+  .feature-card .feature-text h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .feature-card .feature-text p { font-size: 11px; color: var(--text-sub); line-height: 1.4; }
+  .feature-full {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: #f0f7ff;
+    border-radius: 10px;
+    border: 1px solid #bfdbfe;
+  }
+  .feature-full .highlight-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--badge-bg);
+    flex-shrink: 0;
+  }
+  .feature-full .highlight-text h4 { font-size: 14px; font-weight: 700; }
+  .feature-full .highlight-text p { font-size: 12px; color: var(--text-sub); }
+
+  /* 競合比較 */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .compare-table th,
+  .compare-table td {
+    padding: 10px 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-table th {
+    font-weight: 600;
+    background: var(--section-bg);
+    font-size: 11px;
+    color: var(--text-sub);
+  }
+  .compare-table th:first-child,
+  .compare-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+  }
+  .compare-table .eclear-col {
+    background: #f0f7ff;
+    font-weight: 700;
+  }
+  .compare-table .eclear-col.header {
+    background: var(--badge-bg);
+    color: #fff;
+    font-weight: 700;
+  }
+  .compare-table .check { color: var(--green); }
+  .compare-table .cross { color: var(--text-light); }
+  .compare-table .price-highlight { color: var(--red); font-weight: 800; font-size: 14px; }
+
+  /* レビュー */
+  .review-summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--section-bg);
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .review-summary .score {
+    text-align: center;
+  }
+  .review-summary .score .num { font-size: 36px; font-weight: 800; }
+  .review-summary .score .stars-sm { color: var(--star); font-size: 14px; }
+  .review-summary .score .total { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+  .review-bars { flex: 1; }
+  .review-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 3px;
+    font-size: 11px;
+  }
+  .review-bar-row .label { width: 16px; text-align: right; }
+  .review-bar-row .bar {
+    flex: 1;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .review-bar-row .bar .fill {
+    height: 100%;
+    background: var(--star);
+    border-radius: 4px;
+  }
+  .review-bar-row .count { width: 24px; font-size: 10px; color: var(--text-light); }
+
+  .review-card {
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  .review-card .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .review-card .reviewer { font-size: 13px; font-weight: 600; }
+  .review-card .review-date { font-size: 11px; color: var(--text-light); }
+  .review-card .review-stars { color: var(--star); font-size: 13px; margin-bottom: 4px; }
+  .review-card .review-text { font-size: 13px; line-height: 1.6; color: var(--text-sub); }
+  .review-card .review-tag {
+    display: inline-block;
+    font-size: 10px;
+    background: var(--section-bg);
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-top: 8px;
+    color: var(--text-sub);
+  }
+
+  /* FAQ */
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  .faq-q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .faq-q .toggle { font-size: 18px; color: var(--text-light); }
+  .faq-a {
+    font-size: 13px;
+    color: var(--text-sub);
+    margin-top: 8px;
+    line-height: 1.6;
+    display: none;
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .toggle { transform: rotate(45deg); }
+
+  /* サイズガイド */
+  .size-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 12px;
+  }
+  .size-table th, .size-table td {
+    padding: 8px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .size-table th { background: var(--section-bg); font-weight: 600; }
+
+  /* 関連商品 */
+  .related-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 0 16px 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .related-card {
+    flex-shrink: 0;
+    width: 160px;
+  }
+  .related-card .img-ph {
+    width: 160px; height: 160px;
+    background: #e8e8e8;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--text-sub);
+  }
+  .related-card .name { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+  .related-card .price { font-size: 14px; font-weight: 700; }
+
+  /* スティッキーCTA */
+  .sticky-cta {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: #fff;
+    border-top: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 200;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+  }
+  .sticky-cta .price-sm {
+    font-size: 18px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .sticky-cta .price-sm .yen { font-size: 12px; }
+  .sticky-cta .btn-sticky {
+    flex: 1;
+    padding: 14px;
+    background: var(--cta);
+    color: var(--cta-text);
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* フッター余白（スティッキーCTA分） */
+  .footer-spacer { height: 80px; }
+
+  /* ===== デスクトップ表示切替ヘルプ ===== */
+  .help-bar {
+    background: var(--navy);
+    color: #fff;
+    text-align: center;
+    padding: 12px 16px;
+    font-size: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 300;
+  }
+  .help-bar a { color: #93c5fd; }
+
+  /* シーン提案 */
+  .scene-card {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .scene-card .scene-img {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    padding: 20px;
+    text-align: center;
+  }
+  .scene-card .scene-img.light {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%);
+    color: var(--text);
+  }
+  .scene-card .scene-text {
+    padding: 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+  }
+  .scene-card .scene-text h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .scene-card .scene-text p { font-size: 12px; color: var(--text-sub); line-height: 1.6; }
+
+  /* 保証セクション */
+  .guarantee-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .guarantee-item {
+    text-align: center;
+    padding: 16px 8px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .guarantee-item .g-icon { font-size: 24px; margin-bottom: 6px; }
+  .guarantee-item h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .guarantee-item p { font-size: 11px; color: var(--text-sub); }
+
+  /* 中間CTA */
+  .mid-cta {
+    padding: 24px 16px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--section-bg) 0%, #fff 100%);
+  }
+  .mid-cta .cta-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: var(--cta);
+    color: var(--cta-text);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+  .mid-cta .cta-note {
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+</style>
+</head>
+<body>
+
+<div class="help-bar">
+  ECLEAR リカバリーウェア 商品ページ ワイヤーフレーム（モバイル 430px）
+</div>
+
+<div class="wireframe-container">
+
+<!-- ============================================ -->
+<!-- SECTION 0: ヘッダー -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 0: ヘッダー（固定）<span class="tag">sticky</span></div>
+<div class="annotation">
+  <strong>設計意図:</strong> ロゴ・検索・カートの3要素のみ。スクロール追従でブランド認知を維持。高さ48px以内に収める。
+</div>
+
+<div class="header">
+  <div class="header-logo"><span>ECLEAR</span></div>
+  <div class="header-icons">
+    <span>&#128269;</span>
+    <span>&#128722; <small style="font-size:10px;background:var(--red);color:#fff;padding:1px 5px;border-radius:8px;">0</small></span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: 商品画像ギャラリー -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 1: 商品画像ギャラリー <span class="tag">最重要</span></div>
+<div class="annotation critical">
+  <strong>CVR直結:</strong> 画像品質がCVRに最も影響。必要枚数: 8〜10枚。<br>
+  1. モデル着用（正面）/ 2. モデル着用（背面）/ 3. セット内容一覧 / 4. 素材アップ / 5. ライフスタイル（就寝）/ 6. ライフスタイル（リラックス）/ 7. サイズ感比較 / 8. Medilect技術図解 / 9. カラバリ比較 / 10. パッケージ
+</div>
+<div class="annotation">
+  <strong>仕様:</strong> スワイプ対応、ピンチズーム対応、自動再生なし。1:1アスペクト比。<br>
+  <strong>参考:</strong> BAKUNEは着用写真を先頭に配置。ライフスタイル写真を3枚目以降に。
+</div>
+
+<div class="gallery">
+  <div class="gallery-badge">一般医療機器</div>
+  <div class="gallery-placeholder">
+    <div class="icon">&#128085;</div>
+    <p>モデル着用写真（正面）<br>1:1 / 1200x1200px以上</p>
+  </div>
+  <div class="gallery-dots">
+    <span class="active"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<div class="gallery-thumbs">
+  <div class="thumb active">正面</div>
+  <div class="thumb">背面</div>
+  <div class="thumb">セット<br>内容</div>
+  <div class="thumb">素材</div>
+  <div class="thumb">就寝</div>
+  <div class="thumb">リラックス</div>
+  <div class="thumb">サイズ感</div>
+  <div class="thumb">技術<br>図解</div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: 商品情報 + バリアント選択 -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 2: 商品情報 + バリアント <span class="tag">ファーストビュー内</span></div>
+<div class="annotation">
+  <strong>設計意図:</strong> 画像+商品名+価格+カラー/サイズ+CTAを「スクロール1回以内」に収める。<br>
+  BAKUNEはこの構成をファーストビューに完全収容し、即決ユーザーの離脱を防いでいる。
+</div>
+
+<div class="product-info">
+  <!-- バッジ -->
+  <div class="product-badges">
+    <span class="badge badge-medical">一般医療機器</span>
+    <span class="badge badge-set">上下セット</span>
+    <span class="badge badge-free-ship">送料無料</span>
+  </div>
+
+  <!-- タイトル -->
+  <h1 class="product-title">ECLEAR リカバリーウェア<br>長袖トップス + ロングパンツ セット</h1>
+  <p class="product-subtitle">Medilect™ セラミックス配合 / 綿20%混紡</p>
+
+  <!-- 評価 -->
+  <div class="rating-row">
+    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    <span class="rating-score">4.6</span>
+    <span class="rating-count">127件のレビュー</span>
+  </div>
+
+  <!-- 価格 -->
+  <div class="price-area">
+    <div class="price-current">
+      <span class="yen">&yen;</span>16,800<span class="tax">（税込）</span>
+    </div>
+    <div class="price-compare">
+      <span class="price-original">&yen;16,960（単品合計）</span>
+      <span class="price-save">セットで&yen;160お得</span>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>価格の見せ方:</strong> 単品合計との差額を明示。将来的にセット割引率を拡大すればここのインパクトが増す。<br>
+    BAKUNEはセット割引率を10%以上設定して訴求。割引率の見直しを推奨。
+  </div>
+
+  <!-- セット内容 -->
+  <div class="set-contents">
+    <div class="set-contents-title">セット内容</div>
+    <div class="set-item"><span class="dot"></span>長袖トップス（&yen;8,400相当）</div>
+    <div class="set-item"><span class="dot"></span>ロングパンツ（&yen;8,400相当）</div>
+  </div>
+
+  <!-- カラー選択 -->
+  <div class="variant-section">
+    <div class="variant-label">カラー: <span>ブラック</span></div>
+    <div class="color-swatches">
+      <div class="swatch swatch-black active"></div>
+      <div class="swatch swatch-navy"></div>
+    </div>
+  </div>
+
+  <!-- サイズ選択 -->
+  <div class="variant-section">
+    <div class="variant-label">サイズ: <span>M</span></div>
+    <div class="size-buttons">
+      <div class="size-btn">S</div>
+      <div class="size-btn active">M</div>
+      <div class="size-btn">L</div>
+      <div class="size-btn">XL</div>
+      <div class="size-btn">XXL</div>
+    </div>
+    <a class="size-guide-link" href="#">&#128207; サイズガイドを見る</a>
+  </div>
+</div>
+
+<div class="annotation">
+  <strong>バリアントUI:</strong> ドロップダウンは使わない（Baymard調査でCVR低下要因）。ボタン型セレクターを使用。<br>
+  在庫切れサイズはグレーアウト+取消線で表示は残す。カラースウォッチは画像連動必須。
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: CTA（カートに追加） -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 3: CTA エリア <span class="tag">CVR直結</span></div>
+<div class="annotation critical">
+  <strong>CTA仕様:</strong><br>
+  - ボタン高さ: 56px以上（タップ領域確保）<br>
+  - ボタン色: #1a1a1a（黒）— BAKUNEの濃紺と差別化しつつ高コントラスト<br>
+  - フォント: 16px / Bold / 白文字 / letter-spacing: 0.05em<br>
+  - Apple Pay/Google Pay: Shopify Payments連携で自動表示<br>
+  - <strong>スティッキーCTA（後述）で常時アクセス可能にする</strong>
+</div>
+
+<div class="cta-area">
+  <button class="cta-primary">カートに追加</button>
+  <button class="cta-secondary" style="background:#000;color:#fff;border:none;">
+    &#63743; Pay で購入
+  </button>
+  <div class="payment-icons">
+    <span>VISA</span><span>Master</span><span>AMEX</span><span>JCB</span><span>Apple Pay</span><span>Google Pay</span>
+  </div>
+</div>
+
+<!-- 信頼バー -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="icon">&#128666;</span> 送料無料</div>
+  <div class="trust-item"><span class="icon">&#128274;</span> 安全決済</div>
+  <div class="trust-item"><span class="icon">&#128230;</span> 14日返品可</div>
+</div>
+
+<div class="annotation">
+  <strong>信頼バー:</strong> CTA直下に配置。購入ボタンを押す直前の不安を解消。<br>
+  リライブシャツは「30日全額返金」で差別化。ECLEARも返品期間延長を検討すべき。
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: 悩み共感 → ソリューション -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 4: 悩み共感 → 解決提示</div>
+<div class="annotation">
+  <strong>設計意図:</strong> 「即決しなかったユーザー」がスクロールで出会う最初のセクション。<br>
+  共感→課題→解決の3ステップで「自分ごと化」させる。BAKUNE/SIXPADも同様の構成。
+</div>
+
+<div class="content-section alt-bg">
+  <div class="section-heading">こんな悩み、ありませんか？</div>
+  <div class="section-subheading">日々の疲れ、放っておいていませんか</div>
+
+  <div class="pain-cards">
+    <div class="pain-card">
+      <div class="icon-box">&#128187;</div>
+      <div class="text">
+        <h4>デスクワークで肩がバキバキ</h4>
+        <p>長時間のPC作業で、肩や首に負担がかかる毎日</p>
+      </div>
+    </div>
+    <div class="pain-card">
+      <div class="icon-box" style="background:#fef3c7;">&#128164;</div>
+      <div class="text">
+        <h4>朝起きても身体が重い</h4>
+        <p>しっかり寝たはずなのに、スッキリしない日が続く</p>
+      </div>
+    </div>
+    <div class="pain-card">
+      <div class="icon-box" style="background:#dbeafe;">&#127939;</div>
+      <div class="text">
+        <h4>運動後のケアが続かない</h4>
+        <p>ストレッチやマッサージ、毎日は面倒で...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="solution-bridge">
+    <strong>着るだけで、疲労回復。</strong>
+    ECLEARリカバリーウェアは、身体から放出される遠赤外線を輻射し、<br>
+    血行を促進。筋肉のハリ・コリの緩和をサポートします。
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: Medilect テクノロジー -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 5: テクノロジー解説 <span class="tag">差別化の核</span></div>
+<div class="annotation">
+  <strong>設計意図:</strong> 「なぜ効くのか」を3ステップの図解で説明。<br>
+  BAKUNEはSELFLAME、SIXPADはMediculation、VENEXはPHTと全社独自技術名でブランディング。<br>
+  Medilect™の名称を印象づける重要セクション。ダークトーンで「テクノロジー感」を演出。
+</div>
+
+<div class="content-section">
+  <div class="tech-visual">
+    <h3>Medilect™</h3>
+    <div class="subtitle">エレコム独自のセラミックス配合テクノロジー</div>
+    <div class="tech-steps">
+      <div class="tech-step">
+        <div class="num">1</div>
+        <div class="desc">身体が自然に遠赤外線を放出</div>
+      </div>
+      <div class="tech-step">
+        <div class="num">2</div>
+        <div class="desc">Medilect™生地のセラミックスが遠赤外線を輻射</div>
+      </div>
+      <div class="tech-step">
+        <div class="num">3</div>
+        <div class="desc">血行が促進され、筋肉のハリ・コリを緩和、疲労回復</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>画像指示:</strong> このセクションにはMedilect™繊維の拡大写真 or CG、遠赤外線メカニズムのインフォグラフィックを配置。<br>
+    BAKUNEは遠赤外線の仕組み図+サーモグラフィ画像で説得力を出している。ECLEARも同等の素材が必要。
+  </div>
+
+  <!-- 届出番号 -->
+  <div style="text-align:center;margin-top:16px;padding:12px;background:#f0f7ff;border-radius:8px;">
+    <div style="font-size:12px;font-weight:700;color:var(--badge-bg);margin-bottom:4px;">一般医療機器</div>
+    <div style="font-size:11px;color:var(--text-sub);">届出番号: 13B1X10360000059</div>
+    <div style="font-size:11px;color:var(--text-sub);">家庭用遠赤外線血行促進用衣（クラスI）</div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: 5つの設計こだわり -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 6: 製品設計の5つのこだわり</div>
+<div class="annotation">
+  <strong>設計意図:</strong> 機能的価値を具体的に伝えるセクション。ディテール写真とセットで。<br>
+  「綿20%配合」はECLEAR最大の差別化ポイント（競合はポリエステル/レーヨン主体）。ここで強調。
+</div>
+
+<div class="content-section alt-bg">
+  <div class="section-heading">5つのこだわり設計</div>
+  <div class="section-subheading">着心地を追求した、エレコム品質</div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="img-placeholder">ゆったりシルエット写真</div>
+      <div class="feature-text">
+        <h4>オーバーサイズ</h4>
+        <p>締めつけないゆとり設計</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="img-placeholder">縫い目アップ写真</div>
+      <div class="feature-text">
+        <h4>フラットシーム</h4>
+        <p>縫い目が平らで快適</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="img-placeholder">肩部分アップ写真</div>
+      <div class="feature-text">
+        <h4>ラグランスリーブ</h4>
+        <p>肩回りの圧迫を軽減</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="img-placeholder">ウエスト部分写真</div>
+      <div class="feature-text">
+        <h4>深股上+ゴム</h4>
+        <p>長時間でも快適な着用感</p>
+      </div>
+    </div>
+
+    <!-- 綿20%ハイライト -->
+    <div class="feature-full">
+      <div class="highlight-num">20%</div>
+      <div class="highlight-text">
+        <h4>綿混紡で心地よい肌触り</h4>
+        <p>ポリ80% + 綿20%。競合にない吸湿性と肌触り</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 7: 使用シーン提案 -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 7: 使用シーン提案</div>
+<div class="annotation">
+  <strong>設計意図:</strong> 「いつ着るのか」を具体的に提案。24時間使える汎用性をアピール。<br>
+  SIXPADは「24H 365DAYS」、BAKUNEは「睡眠特化」で訴求。ECLEARは「夜+日中」の両方を提案。
+</div>
+
+<div class="content-section">
+  <div class="section-heading">着るだけ、それだけ。</div>
+  <div class="section-subheading">特別なケアは不要。着替えるだけの新習慣</div>
+
+  <div class="scene-card">
+    <div class="scene-img">
+      &#127769; 就寝シーン<br>ベッドルーム / 間接照明 / リラックス
+    </div>
+    <div class="scene-text">
+      <h4>夜の休息に</h4>
+      <p>帰宅後、着替えるだけで「休息モード」ON。寝ている間も血行を促進し、翌朝のスッキリ感をサポート。</p>
+    </div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-img light">
+      &#9749; 日中シーン<br>リビング / 在宅ワーク / 休日の外出
+    </div>
+    <div class="scene-text">
+      <h4>日中の活動にも</h4>
+      <p>シンプルなノームコアデザインで、ちょっとした外出にもそのまま。デスクワーク中も着ているだけでケア。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 中間CTA -->
+<!-- ============================================ -->
+<div class="section-label">中間CTA <span class="tag">2回目のCTA</span></div>
+<div class="annotation">
+  <strong>配置理由:</strong> ページ中盤に2回目のCTAを配置。テクノロジー理解+シーン提案で購買意欲が高まったタイミング。<br>
+  Nielsen Norman Group: CTAを3箇所に配置でCVR +25%。
+</div>
+
+<div class="mid-cta">
+  <button class="cta-btn">カートに追加 &mdash; &yen;16,800</button>
+  <div class="cta-note">送料無料 / 14日間返品可能</div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 8: 競合比較 -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 8: 他社比較チャート <span class="tag">価格優位性</span></div>
+<div class="annotation">
+  <strong>設計意図:</strong> ECLEARの最大の武器「価格」を可視化。ブランド名は伏せてA/B/C社表記。<br>
+  Amazon A+設計書と同じロジックだが、Shopify版ではより大胆にデザインできる。<br>
+  コラントッテは「管理医療機器」で差別化しているため、この点は含めない方が安全。
+</div>
+
+<div class="content-section alt-bg">
+  <div class="section-heading">リカバリーウェア比較</div>
+  <div class="section-subheading">同等の効能を、適正価格で</div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th class="eclear-col header">ECLEAR</th>
+        <th>A社</th>
+        <th>B社</th>
+        <th>C社</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>一般医療機器</td>
+        <td class="eclear-col check">&#10003;</td>
+        <td class="check">&#10003;</td>
+        <td class="check">&#10003;</td>
+        <td class="check">&#10003;</td>
+      </tr>
+      <tr>
+        <td>遠赤外線技術</td>
+        <td class="eclear-col check">&#10003;</td>
+        <td class="check">&#10003;</td>
+        <td class="check">&#10003;</td>
+        <td class="cross">&#9472;</td>
+      </tr>
+      <tr>
+        <td>綿混紡</td>
+        <td class="eclear-col check" style="font-weight:800;">&#10003;</td>
+        <td class="cross">&#10005;</td>
+        <td class="cross">&#10005;</td>
+        <td class="cross">&#10005;</td>
+      </tr>
+      <tr>
+        <td>フラットシーム</td>
+        <td class="eclear-col check">&#10003;</td>
+        <td class="cross">&#9651;</td>
+        <td class="check">&#10003;</td>
+        <td class="cross">&#9651;</td>
+      </tr>
+      <tr>
+        <td>セット価格</td>
+        <td class="eclear-col price-highlight">&yen;16,800</td>
+        <td>&yen;24,000台</td>
+        <td>&yen;24,000台</td>
+        <td>&yen;36,000台</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 9: レビュー -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 9: カスタマーレビュー <span class="tag">社会的証明</span></div>
+<div class="annotation critical">
+  <strong>CVR直結:</strong> レビュー件数100件超で信頼度が飛躍的に向上（調査データ）。<br>
+  現在Judge.me導入済み。写真付きレビュー収集を強化すべき。BAKUNEは4,000件超。<br>
+  <strong>UGC写真:</strong> stock画像比で CVR +35%。レビュー投稿時に写真アップロードを強く促す仕組みが必要。
+</div>
+
+<div class="content-section">
+  <div class="section-heading">お客様の声</div>
+
+  <div class="review-summary">
+    <div class="score">
+      <div class="num">4.6</div>
+      <div class="stars-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="total">127件</div>
+    </div>
+    <div class="review-bars">
+      <div class="review-bar-row">
+        <span class="label">5</span>
+        <div class="bar"><div class="fill" style="width:72%"></div></div>
+        <span class="count">91</span>
+      </div>
+      <div class="review-bar-row">
+        <span class="label">4</span>
+        <div class="bar"><div class="fill" style="width:18%"></div></div>
+        <span class="count">23</span>
+      </div>
+      <div class="review-bar-row">
+        <span class="label">3</span>
+        <div class="bar"><div class="fill" style="width:7%"></div></div>
+        <span class="count">9</span>
+      </div>
+      <div class="review-bar-row">
+        <span class="label">2</span>
+        <div class="bar"><div class="fill" style="width:2%"></div></div>
+        <span class="count">3</span>
+      </div>
+      <div class="review-bar-row">
+        <span class="label">1</span>
+        <div class="bar"><div class="fill" style="width:1%"></div></div>
+        <span class="count">1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="review-card">
+    <div class="review-header">
+      <span class="reviewer">T.K. さん</span>
+      <span class="review-date">2026/03/05</span>
+    </div>
+    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    <div class="review-text">
+      BAKUNEと迷いましたが、綿混紡の肌触りが決め手でした。汗をかいてもべたつかず、朝まで快適に眠れます。価格もリーズナブルで大満足。
+    </div>
+    <span class="review-tag">サイズ: M / カラー: ブラック</span>
+  </div>
+
+  <div class="review-card">
+    <div class="review-header">
+      <span class="reviewer">M.S. さん</span>
+      <span class="review-date">2026/02/28</span>
+    </div>
+    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+    <div class="review-text">
+      在宅ワーク中もこれ1枚。オーバーサイズでリラックスできるし、ちょっとした買い物にもそのまま行けるデザインがいい。
+    </div>
+    <span class="review-tag">サイズ: L / カラー: ネイビー</span>
+  </div>
+
+  <div style="text-align:center;padding:12px;">
+    <a href="#" style="color:var(--accent);font-size:14px;font-weight:600;">すべてのレビューを見る &rarr;</a>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 10: サイズガイド -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 10: サイズガイド</div>
+<div class="annotation">
+  <strong>設計意図:</strong> アパレル購入者の89%がサイズガイドを確認。サイズ不安はカゴ落ち最大要因の1つ。<br>
+  モバイルではモーダル表示がベスト。ここではページ内に展開する形で設計。<br>
+  <strong>推奨追加:</strong> モデル身長・体重情報、「迷ったら大きめ推奨」のアドバイス。
+</div>
+
+<div class="content-section alt-bg">
+  <div class="section-heading">サイズガイド</div>
+  <div class="section-subheading">モデル: 男性175cm/65kg → Lサイズ着用</div>
+
+  <table class="size-table">
+    <thead>
+      <tr><th>サイズ</th><th>身長</th><th>胸囲</th><th>着丈</th><th>ウエスト</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>S</td><td>155-165</td><td>88</td><td>66</td><td>64-77</td></tr>
+      <tr><td>M</td><td>165-175</td><td>96</td><td>70</td><td>69-84</td></tr>
+      <tr style="background:#f0f7ff;font-weight:600;"><td>L</td><td>170-180</td><td>104</td><td>74</td><td>74-90</td></tr>
+      <tr><td>XL</td><td>175-185</td><td>112</td><td>78</td><td>79-96</td></tr>
+      <tr><td>XXL</td><td>180-190</td><td>120</td><td>82</td><td>84-102</td></tr>
+    </tbody>
+  </table>
+
+  <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-sub);">
+    ※ ゆったりとした着心地のため、普段のサイズでOK<br>
+    ※ 迷った場合は大きめサイズをおすすめします
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 11: FAQ -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 11: FAQ（よくある質問）</div>
+<div class="annotation">
+  <strong>設計意図:</strong> アコーディオン形式、5〜8問に絞る。購入前の不安を最終解消。<br>
+  CTA直前に配置し、FAQ読了→即購入の導線を設計。
+</div>
+
+<div class="content-section">
+  <div class="section-heading">よくある質問</div>
+
+  <div class="faq-item open">
+    <div class="faq-q">
+      洗濯しても効果は持続しますか？
+      <span class="toggle">+</span>
+    </div>
+    <div class="faq-a">
+      はい。Medilect™のセラミックスは繊維に練り込まれているため、繰り返しの洗濯でも効果は持続します。ネットに入れて洗濯機で洗えます。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      効果はいつ頃から実感できますか？
+      <span class="toggle">+</span>
+    </div>
+    <div class="faq-a">
+      着用直後から血行促進効果が働きます。体感には個人差がありますが、継続的な着用をおすすめします。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      他のリカバリーウェアとの違いは？
+      <span class="toggle">+</span>
+    </div>
+    <div class="faq-a">
+      ECLEARは綿20%混紡で吸湿性に優れた肌触りが特徴です。一般医療機器認定の同等効能を、適正価格で提供しています。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      返品・交換はできますか？
+      <span class="toggle">+</span>
+    </div>
+    <div class="faq-a">
+      商品到着後14日以内であれば、未使用・未開封の商品に限り返品・交換を承ります。サイズ交換は1回無料です。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      敏感肌でも着用できますか？
+      <span class="toggle">+</span>
+    </div>
+    <div class="faq-a">
+      綿20%混紡で肌あたりが柔らかく、フラットシーム縫製で縫い目の刺激を最小限に抑えています。敏感肌の方にもご好評いただいています。
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 12: 保証・安心 -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 12: 安心ポイント</div>
+<div class="annotation">
+  <strong>設計意図:</strong> 高単価商品の最終ハードル「本当に大丈夫？」を解消。<br>
+  リライブシャツの30日全額返金がCVRに大きく寄与している。ECLEARも返品ポリシー強化を推奨。
+</div>
+
+<div class="content-section alt-bg">
+  <div class="guarantee-grid">
+    <div class="guarantee-item">
+      <div class="g-icon">&#128666;</div>
+      <h4>送料無料</h4>
+      <p>全国どこでも送料無料</p>
+    </div>
+    <div class="guarantee-item">
+      <div class="g-icon">&#128260;</div>
+      <h4>14日間返品OK</h4>
+      <p>サイズ交換1回無料</p>
+    </div>
+    <div class="guarantee-item">
+      <div class="g-icon">&#128274;</div>
+      <h4>安全な決済</h4>
+      <p>SSL暗号化+3Dセキュア</p>
+    </div>
+    <div class="guarantee-item">
+      <div class="g-icon">&#127973;</div>
+      <h4>エレコム品質</h4>
+      <p>PC周辺機器トップ企業の品質基準</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 最終CTA -->
+<!-- ============================================ -->
+<div class="section-label">最終CTA <span class="tag">3回目のCTA</span></div>
+<div class="annotation">
+  <strong>配置理由:</strong> FAQ+保証セクション直後。全ての不安解消後の最終訴求ポイント。<br>
+  ここまでスクロールしたユーザーは購入意欲が高い。価格+送料無料を再表示。
+</div>
+
+<div class="mid-cta">
+  <button class="cta-btn">カートに追加 &mdash; &yen;16,800（税込・送料無料）</button>
+  <div class="cta-note">一般医療機器 | 届出番号: 13B1X10360000059</div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 13: 関連商品 -->
+<!-- ============================================ -->
+<div class="section-label">SECTION 13: 関連商品・クロスセル</div>
+<div class="annotation">
+  <strong>設計意図:</strong> 上下セットを見ている人に単品・半袖セット・関連商品を提案。<br>
+  横スクロールカルーセル。AOV向上を狙う。
+</div>
+
+<div class="content-section">
+  <div class="section-heading" style="font-size:16px;text-align:left;">こちらもおすすめ</div>
+
+  <div class="related-scroll">
+    <div class="related-card">
+      <div class="img-ph">半袖+ハーフパンツ<br>セット</div>
+      <div class="name">半袖ハーフパンツセット</div>
+      <div class="price">&yen;14,800</div>
+    </div>
+    <div class="related-card">
+      <div class="img-ph">長袖トップス<br>単品</div>
+      <div class="name">長袖トップス 単品</div>
+      <div class="price">&yen;8,400</div>
+    </div>
+    <div class="related-card">
+      <div class="img-ph">ロングパンツ<br>単品</div>
+      <div class="name">ロングパンツ 単品</div>
+      <div class="price">&yen;8,400</div>
+    </div>
+    <div class="related-card">
+      <div class="img-ph">リカバリー<br>ネックハグ</div>
+      <div class="name">リカバリーネックハグ</div>
+      <div class="price">&yen;4,980</div>
+    </div>
+  </div>
+</div>
+
+<!-- フッター -->
+<div style="padding:24px 16px;background:#1a1a1a;color:#fff;">
+  <div style="text-align:center;">
+    <div style="font-size:16px;font-weight:700;letter-spacing:0.1em;margin-bottom:8px;">ECLEAR</div>
+    <div style="font-size:11px;color:#999;line-height:1.6;">
+      エレコムヘルスケア公式オンラインストア<br>
+      一般医療機器 | 届出番号: 13B1X10360000059<br>
+      医療機器製造販売業者: エレコム株式会社
+    </div>
+  </div>
+</div>
+
+<!-- フッタースペーサー（スティッキーCTA分） -->
+<div class="footer-spacer"></div>
+
+<!-- ============================================ -->
+<!-- スティッキーCTA（画面下部固定） -->
+<!-- ============================================ -->
+<div class="section-label" style="position:relative;z-index:201;">STICKY CTA（常時表示） <span class="tag">CVR +8〜15%</span></div>
+<div class="annotation critical" style="position:relative;z-index:201;">
+  <strong>最重要施策:</strong> 実装だけでCVR +8〜15%のデータあり。<br>
+  <strong>表示条件:</strong> オリジナルCTAが画面外に出たタイミングで200msスライドインアニメーション。<br>
+  <strong>構成:</strong> 価格 + カートに追加ボタン。バリアント未選択の場合はモーダルで選択させる。<br>
+  <strong>高さ:</strong> 60px以内（コンテンツ表示領域を圧迫しない）。
+</div>
+
+<div class="sticky-cta">
+  <div class="price-sm"><span class="yen">&yen;</span>16,800</div>
+  <button class="btn-sticky">カートに追加</button>
+</div>
+
+</div><!-- /wireframe-container -->
+
+<!-- ============================================ -->
+<!-- 設計仕様書 -->
+<!-- ============================================ -->
+<div style="max-width:800px;margin:40px auto;padding:0 20px;">
+
+<h1 style="font-size:24px;margin-bottom:24px;padding-bottom:12px;border-bottom:3px solid #1e3a5f;color:#1e3a5f;">
+  設計仕様書
+</h1>
+
+<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">1. タイポグラフィ</h2>
+<table style="width:100%;border-collapse:collapse;font-size:13px;">
+  <tr style="background:#f8f9fa;"><th style="padding:8px;text-align:left;border:1px solid #ddd;">要素</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">フォント</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">サイズ</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">ウェイト</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">行間</th></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">セクション見出し</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">20px</td><td style="padding:8px;border:1px solid #ddd;">800</td><td style="padding:8px;border:1px solid #ddd;">1.4</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">商品タイトル</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">18px</td><td style="padding:8px;border:1px solid #ddd;">700</td><td style="padding:8px;border:1px solid #ddd;">1.4</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">価格（メイン）</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">28px</td><td style="padding:8px;border:1px solid #ddd;">800</td><td style="padding:8px;border:1px solid #ddd;">1.2</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">本文</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">14px</td><td style="padding:8px;border:1px solid #ddd;">400</td><td style="padding:8px;border:1px solid #ddd;">1.6</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">補足テキスト</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">12px</td><td style="padding:8px;border:1px solid #ddd;">400</td><td style="padding:8px;border:1px solid #ddd;">1.5</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">注釈・バッジ</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">10-11px</td><td style="padding:8px;border:1px solid #ddd;">600</td><td style="padding:8px;border:1px solid #ddd;">1.4</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">CTAボタン</td><td style="padding:8px;border:1px solid #ddd;">Noto Sans JP</td><td style="padding:8px;border:1px solid #ddd;">16px</td><td style="padding:8px;border:1px solid #ddd;">700</td><td style="padding:8px;border:1px solid #ddd;">1.0</td></tr>
+</table>
+
+<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">2. カラーパレット</h2>
+<table style="width:100%;border-collapse:collapse;font-size:13px;">
+  <tr style="background:#f8f9fa;"><th style="padding:8px;text-align:left;border:1px solid #ddd;">用途</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">カラー</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">HEX</th></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">背景（メイン）</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#ffffff;border:1px solid #ddd;vertical-align:middle;"></span> White</td><td style="padding:8px;border:1px solid #ddd;">#FFFFFF</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">背景（交互セクション）</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#f8f9fa;border:1px solid #ddd;vertical-align:middle;"></span> Light Gray</td><td style="padding:8px;border:1px solid #ddd;">#F8F9FA</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">テキスト（メイン）</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#1a1a1a;vertical-align:middle;"></span> Near Black</td><td style="padding:8px;border:1px solid #ddd;">#1A1A1A</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">テキスト（サブ）</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#666666;vertical-align:middle;"></span> Gray</td><td style="padding:8px;border:1px solid #ddd;">#666666</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">CTAボタン</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#1a1a1a;vertical-align:middle;"></span> Black</td><td style="padding:8px;border:1px solid #ddd;">#1A1A1A</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">ブランドアクセント</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#0d5e8a;vertical-align:middle;"></span> ECLEAR Blue</td><td style="padding:8px;border:1px solid #ddd;">#0D5E8A</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">リンク</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#2563eb;vertical-align:middle;"></span> Blue</td><td style="padding:8px;border:1px solid #ddd;">#2563EB</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">スター評価</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#f59e0b;vertical-align:middle;"></span> Amber</td><td style="padding:8px;border:1px solid #ddd;">#F59E0B</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">割引・警告</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#dc2626;vertical-align:middle;"></span> Red</td><td style="padding:8px;border:1px solid #ddd;">#DC2626</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">ボーダー</td><td style="padding:8px;border:1px solid #ddd;"><span style="display:inline-block;width:16px;height:16px;background:#e5e7eb;border:1px solid #ddd;vertical-align:middle;"></span> Light Border</td><td style="padding:8px;border:1px solid #ddd;">#E5E7EB</td></tr>
+</table>
+
+<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">3. スペーシング</h2>
+<table style="width:100%;border-collapse:collapse;font-size:13px;">
+  <tr style="background:#f8f9fa;"><th style="padding:8px;text-align:left;border:1px solid #ddd;">要素</th><th style="padding:8px;text-align:left;border:1px solid #ddd;">値</th></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">ページ左右パディング</td><td style="padding:8px;border:1px solid #ddd;">16px</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">セクション上下パディング</td><td style="padding:8px;border:1px solid #ddd;">32px</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">カード内パディング</td><td style="padding:8px;border:1px solid #ddd;">12-16px</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">セクション見出し〜コンテンツ間</td><td style="padding:8px;border:1px solid #ddd;">24px</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">カード間ギャップ</td><td style="padding:8px;border:1px solid #ddd;">12px</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">ボーダー半径（カード）</td><td style="padding:8px;border:1px solid #ddd;">10px</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">ボーダー半径（ボタン）</td><td style="padding:8px;border:1px solid #ddd;">8px</td></tr>
+</table>
+
+<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">4. セクション構成とCVR期待効果</h2>
+<table style="width:100%;border-collapse:collapse;font-size:13px;">
+  <tr style="background:#f8f9fa;">
+    <th style="padding:8px;text-align:left;border:1px solid #ddd;">順番</th>
+    <th style="padding:8px;text-align:left;border:1px solid #ddd;">セクション</th>
+    <th style="padding:8px;text-align:left;border:1px solid #ddd;">目的</th>
+    <th style="padding:8px;text-align:left;border:1px solid #ddd;">CVR寄与</th>
+  </tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">0</td><td style="padding:8px;border:1px solid #ddd;">ヘッダー（sticky）</td><td style="padding:8px;border:1px solid #ddd;">ブランド認知+カートアクセス</td><td style="padding:8px;border:1px solid #ddd;">-</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">1</td><td style="padding:8px;border:1px solid #ddd;">画像ギャラリー</td><td style="padding:8px;border:1px solid #ddd;">第一印象・商品理解</td><td style="padding:8px;border:1px solid #ddd;">最重要</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">2</td><td style="padding:8px;border:1px solid #ddd;">商品情報+バリアント</td><td style="padding:8px;border:1px solid #ddd;">購入判断の基本情報</td><td style="padding:8px;border:1px solid #ddd;">最重要</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">3</td><td style="padding:8px;border:1px solid #ddd;">CTA（1回目）</td><td style="padding:8px;border:1px solid #ddd;">即決ユーザーの刈り取り</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">4</td><td style="padding:8px;border:1px solid #ddd;">悩み共感</td><td style="padding:8px;border:1px solid #ddd;">自分ごと化・課題認識</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">5</td><td style="padding:8px;border:1px solid #ddd;">テクノロジー解説</td><td style="padding:8px;border:1px solid #ddd;">「なぜ効くのか」の納得</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">6</td><td style="padding:8px;border:1px solid #ddd;">設計こだわり</td><td style="padding:8px;border:1px solid #ddd;">機能的価値の訴求</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">7</td><td style="padding:8px;border:1px solid #ddd;">使用シーン</td><td style="padding:8px;border:1px solid #ddd;">利用イメージの具体化</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">中間CTA（2回目）</td><td style="padding:8px;border:1px solid #ddd;">理解後の購入促進</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">8</td><td style="padding:8px;border:1px solid #ddd;">競合比較</td><td style="padding:8px;border:1px solid #ddd;">価格優位性の可視化</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">9</td><td style="padding:8px;border:1px solid #ddd;">レビュー</td><td style="padding:8px;border:1px solid #ddd;">社会的証明</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">10</td><td style="padding:8px;border:1px solid #ddd;">サイズガイド</td><td style="padding:8px;border:1px solid #ddd;">サイズ不安の解消</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">11</td><td style="padding:8px;border:1px solid #ddd;">FAQ</td><td style="padding:8px;border:1px solid #ddd;">残りの不安解消</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">12</td><td style="padding:8px;border:1px solid #ddd;">安心ポイント</td><td style="padding:8px;border:1px solid #ddd;">最終的な信頼構築</td><td style="padding:8px;border:1px solid #ddd;">中</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">最終CTA（3回目）</td><td style="padding:8px;border:1px solid #ddd;">熟慮ユーザーの刈り取り</td><td style="padding:8px;border:1px solid #ddd;">高</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">13</td><td style="padding:8px;border:1px solid #ddd;">関連商品</td><td style="padding:8px;border:1px solid #ddd;">AOV向上・離脱防止</td><td style="padding:8px;border:1px solid #ddd;">低</td></tr>
+  <tr><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">スティッキーCTA</td><td style="padding:8px;border:1px solid #ddd;">常時購入アクセス</td><td style="padding:8px;border:1px solid #ddd;">+8〜15%</td></tr>
+</table>
+
+<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">5. 即効性の高い施策（優先度順）</h2>
+<ol style="font-size:14px;line-height:2;">
+  <li><strong>スティッキーCTA実装</strong> — 実装のみでCVR +8〜15%（データ実証済み）</li>
+  <li><strong>商品画像の高品質化・枚数増加</strong> — 現状から8〜10枚に。ライフスタイル写真追加</li>
+  <li><strong>レビュー表示の強化</strong> — 星評価サマリー+写真付きレビュー+バー分布表示</li>
+  <li><strong>バリアント選択のボタン化</strong> — ドロップダウン廃止、ボタンセレクターに変更</li>
+  <li><strong>信頼バッジの追加</strong> — CTA直下に「送料無料/安全決済/返品可」を配置</li>
+  <li><strong>悩み共感セクション追加</strong> — ページ下部への商品説明コンテンツ拡充</li>
+  <li><strong>競合比較チャート</strong> — 価格優位性を一目で伝える比較表</li>
+  <li><strong>FAQ追加</strong> — アコーディオン形式で5〜8問</li>
+  <li><strong>セット割引率の見直し</strong> — 現在の&yen;160差は弱い。10%以上の割引率を推奨</li>
+</ol>
+
+<h2 style="font-size:18px;margin:24px 0 12px;color:#1e3a5f;">6. 薬機法コンプライアンス</h2>
+<div style="font-size:13px;line-height:1.8;background:#fef2f2;padding:16px;border-radius:8px;border:1px solid #fecaca;">
+  <strong style="color:#991b1b;">使える表現:</strong> 血行を促進 / 筋肉のハリ・コリを緩和 / 筋肉の疲労軽減 / 疲労回復<br>
+  <strong style="color:#991b1b;">使えない表現:</strong> 「すぐ効く」「○日で実感」「治る」「改善する」等の即効性・治療表現<br>
+  <strong style="color:#991b1b;">体験談:</strong> 個人の感想による効能暗示はNG<br>
+  <strong style="color:#991b1b;">必須表記:</strong> 届出番号（13B1X10360000059）、一般医療機器の表記
+</div>
+
+<div style="margin-top:40px;padding:20px;background:#f0f7ff;border-radius:8px;font-size:13px;line-height:1.6;">
+  <strong>競合分析ソース:</strong><br>
+  BAKUNE (TENTIAL) / VENEX / SIXPAD Recovery Wear (MTG) / コラントッテ RESNO / リライブシャツ<br>
+  CVRベストプラクティス: Shopify公式 / Baymard Institute / Nielsen Norman Group / GrowthRock AB Test<br>
+  <br>
+  <strong>制作日:</strong> 2026-03-11<br>
+  <strong>対象:</strong> shop.elecom-hc.co.jp 商品ページ<br>
+  <strong>対象商品:</strong> ECLEAR リカバリーウェア 長袖トップス+ロングパンツ セット
+</div>
+
+</div>
+
+</body>
+</html>
